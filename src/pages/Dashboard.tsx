@@ -65,14 +65,14 @@ const Dashboard: React.FC = () => {
     icon: React.ElementType;
     color: string;
   }> = ({ title, value, icon: Icon, color }) => (
-    <div className="bg-white rounded-xl shadow-sm p-6 border border-gray-100">
+    <div className="bg-white dark:bg-gray-900 rounded-xl shadow-sm p-6 border border-gray-100 dark:border-white">
       <div className="flex items-center justify-between">
         <div>
-          <p className="text-sm font-medium text-gray-600">{title}</p>
-          <p className="text-2xl font-bold text-gray-900 mt-2">{value}</p>
+          <p className="text-sm font-medium text-gray-600 dark:text-white dark:text-black">{title}</p>
+          <p className="text-2xl font-bold text-gray-900 dark:text-white dark:text-black mt-2">{value}</p>
         </div>
         <div className={`p-3 rounded-full ${color}`}>
-          <Icon className="text-white" size={24} />
+          <Icon className="text-white dark:text-black" size={24} />
         </div>
       </div>
     </div>
@@ -81,18 +81,18 @@ const Dashboard: React.FC = () => {
   return (
     <div className="space-y-6">
       <div className="flex justify-between items-center">
-        <h1 className="text-3xl font-bold text-gray-900">Dashboard</h1>
+        <h1 className="text-3xl font-bold text-gray-900 dark:text-white dark:text-black">Dashboard</h1>
         <div className="flex space-x-3">
           <Link
             to="/pos"
-            className="bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 transition-colors font-medium flex items-center space-x-2"
+            className="bg-blue-600 text-white dark:text-black px-6 py-3 rounded-lg hover:bg-blue-700 transition-colors font-medium flex items-center space-x-2"
           >
             <ShoppingCart size={20} />
             <span>New Sale</span>
           </Link>
           <Link
             to="/products"
-            className="bg-green-600 text-white px-6 py-3 rounded-lg hover:bg-green-700 transition-colors font-medium flex items-center space-x-2"
+            className="bg-green-600 text-white dark:text-black px-6 py-3 rounded-lg hover:bg-green-700 transition-colors font-medium flex items-center space-x-2"
           >
             <Package size={20} />
             <span>Add Product</span>
@@ -130,9 +130,9 @@ const Dashboard: React.FC = () => {
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         {/* Recent Sales */}
-        <div className="bg-white rounded-xl shadow-sm p-6 border border-gray-100">
+        <div className="bg-white dark:bg-gray-900 rounded-xl shadow-sm p-6 border border-gray-100">
           <div className="flex items-center justify-between mb-6">
-            <h2 className="text-xl font-semibold text-gray-900">Recent Sales</h2>
+            <h2 className="text-xl font-semibold text-gray-900 dark:text-white dark:text-black">Recent Sales</h2>
             <Link to="/reports" className="text-blue-600 hover:text-blue-700 text-sm font-medium">
               View All
             </Link>
@@ -141,13 +141,13 @@ const Dashboard: React.FC = () => {
             {recentSales.map((sale) => (
               <div key={sale.id} className="flex items-center justify-between p-3 border border-gray-100 rounded-lg">
                 <div>
-                  <p className="font-medium text-gray-900">{sale.invoiceNumber}</p>
+                  <p className="font-medium text-gray-900 dark:text-white dark:text-black">{sale.invoiceNumber}</p>
                   <p className="text-sm text-gray-600">
                     {new Date(sale.createdAt).toLocaleDateString()} • {sale.cashier}
                   </p>
                 </div>
                 <div className="text-right">
-                  <p className="font-semibold text-gray-900">₱{sale.total.toFixed(2)}</p>
+                  <p className="font-semibold text-gray-900 dark:text-white dark:text-black">₱{sale.total.toFixed(2)}</p>
                   <p className="text-sm text-gray-600 capitalize">{sale.paymentMethod}</p>
                 </div>
               </div>
@@ -156,9 +156,9 @@ const Dashboard: React.FC = () => {
         </div>
 
         {/* Low Stock Alerts */}
-        <div className="bg-white rounded-xl shadow-sm p-6 border border-gray-100">
+        <div className="bg-white dark:bg-gray-900 rounded-xl shadow-sm p-6 border border-gray-100">
           <div className="flex items-center justify-between mb-6">
-            <h2 className="text-xl font-semibold text-gray-900">Low Stock Alerts</h2>
+            <h2 className="text-xl font-semibold text-gray-900 dark:text-white dark:text-black">Low Stock Alerts</h2>
             <Link to="/inventory" className="text-blue-600 hover:text-blue-700 text-sm font-medium">
               View All
             </Link>
@@ -167,7 +167,7 @@ const Dashboard: React.FC = () => {
             {lowStockProducts.map((product) => (
               <div key={product.id} className="flex items-center justify-between p-3 border border-yellow-100 bg-yellow-50 rounded-lg">
                 <div>
-                  <p className="font-medium text-gray-900">{product.name}</p>
+                  <p className="font-medium text-gray-900 dark:text-white dark:text-black">{product.name}</p>
                   <p className="text-sm text-gray-600">{product.sku}</p>
                 </div>
                 <div className="text-right">

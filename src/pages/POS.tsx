@@ -245,9 +245,9 @@ const POS: React.FC = () => {
   return (
     <div className="h-full flex flex-col lg:flex-row gap-6">
       {/* Products Section */}
-      <div className="flex-1 bg-white rounded-xl shadow-sm p-6 border border-gray-100">
+      <div className="flex-1 bg-white dark:bg-gray-900 rounded-xl shadow-sm p-6 border border-gray-100 dark:border-white-100">
         <div className="mb-6">
-          <h1 className="text-2xl font-bold text-gray-900 mb-2">Point of Sale</h1>
+          <h1 className="text-2xl font-bold text-gray-900 dark:text-white dark:text-black mb-2">Point of Sale</h1>
           <div className="relative">
             <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" size={20} />
             <input
@@ -268,15 +268,15 @@ const POS: React.FC = () => {
               onClick={() => addToCart(product)}
             >
               <div className="flex justify-between items-start mb-2">
-                <h3 className="font-semibold text-gray-900">{product.name}</h3>
-                <span className="text-sm text-gray-500 bg-gray-100 px-2 py-1 rounded">
+                <h3 className="font-semibold text-gray-900 dark:text-white">{product.name}</h3>
+                <span className="text-sm text-gray-500 dark:text-white bg-gray-100 dark:bg-gray-900 px-2 py-1 rounded">
                   {product.sku}
                 </span>
               </div>
               <p className="text-gray-600 text-sm mb-2">{product.category}</p>
               <div className="flex justify-between items-center">
                 <span className="text-lg font-bold text-green-600">₱{product.price.toFixed(2)}</span>
-                <span className={`text-sm ${product.stock < 10 ? 'text-red-600' : 'text-gray-500'}`}>
+                <span className={`text-sm ${product.stock < 10 ? 'text-red-600' : 'text-gray-500 dark:text-white'}`}>
                   Stock: {product.stock}
                 </span>
               </div>
@@ -286,12 +286,12 @@ const POS: React.FC = () => {
       </div>
 
       {/* Cart & Payment Section */}
-      <div className="w-full lg:w-96 bg-white rounded-xl shadow-sm p-6 border border-gray-100">
+      <div className="w-full lg:w-96 bg-white dark:bg-gray-900  rounded-xl shadow-sm p-6 border border-gray-100 dark:border-white-100">
         <div className="flex items-center space-x-2 mb-6">
           <ShoppingCart size={24} className="text-blue-600" />
-          <h2 className="text-xl font-semibold text-gray-900">Shopping Cart</h2>
+          <h2 className="text-xl font-semibold text-gray-900 dark:text-white">Shopping Cart</h2>
           {cart.length > 0 && (
-            <span className="bg-blue-600 text-white text-sm px-2 py-1 rounded-full">
+            <span className="bg-blue-600 text-white dark:text-black text-sm px-2 py-1 rounded-full">
               {cart.reduce((sum, item) => sum + item.quantity, 0)}
             </span>
           )}
@@ -300,37 +300,37 @@ const POS: React.FC = () => {
         {/* Cart Items */}
         <div className="space-y-3 mb-6 max-h-64 overflow-y-auto">
           {cart.length === 0 ? (
-            <p className="text-gray-500 text-center py-4">Cart is empty</p>
+            <p className="text-gray-500 dark:text-white text-center py-4">Cart is empty</p>
           ) : (
             cart.map(item => (
               <div key={item.productId} className="flex items-center justify-between p-3 border border-gray-100 rounded-lg">
                 <div className="flex-1">
-                  <p className="font-medium text-gray-900">{item.name}</p>
+                  <p className="font-medium text-gray-900 dark:text-white">{item.name}</p>
                   <p className="text-sm text-gray-600">₱{item.price.toFixed(2)}</p>
                 </div>
                 <div className="flex items-center space-x-2">
                   <button
                     onClick={() => updateQuantity(item.productId, item.quantity - 1)}
-                    className="p-1 text-gray-500 hover:text-red-600 transition-colors"
+                    className="p-1 text-gray-500 dark:text-white hover:text-red-600 transition-colors"
                   >
                     <Minus size={16} />
                   </button>
                   <span className="w-8 text-center font-medium">{item.quantity}</span>
                   <button
                     onClick={() => updateQuantity(item.productId, item.quantity + 1)}
-                    className="p-1 text-gray-500 hover:text-green-600 transition-colors"
+                    className="p-1 text-gray-500 dark:text-white hover:text-green-600 transition-colors"
                   >
                     <Plus size={16} />
                   </button>
                   <button
                     onClick={() => removeFromCart(item.productId)}
-                    className="p-1 text-gray-500 hover:text-red-600 transition-colors ml-2"
+                    className="p-1 text-gray-500 dark:text-white hover:text-red-600 transition-colors ml-2"
                   >
                     <Trash2 size={16} />
                   </button>
                 </div>
                 <div className="text-right w-20">
-                  <p className="font-semibold text-gray-900">₱{item.total.toFixed(2)}</p>
+                  <p className="font-semibold text-gray-900 dark:text-white">₱{item.total.toFixed(2)}</p>
                 </div>
               </div>
             ))
@@ -410,7 +410,7 @@ const POS: React.FC = () => {
         <button
           onClick={processSale}
           disabled={cart.length === 0 || payment.amountPaid < getTotal() || isProcessing}
-          className="w-full bg-green-600 text-white py-3 px-4 rounded-lg hover:bg-green-700 disabled:bg-gray-400 disabled:cursor-not-allowed transition-colors font-medium flex items-center justify-center space-x-2"
+          className="w-full bg-green-600 text-white dark:text-black py-3 px-4 rounded-lg hover:bg-green-700 disabled:bg-gray-400 disabled:cursor-not-allowed transition-colors font-medium flex items-center justify-center space-x-2"
         >
           <Calculator size={20} />
           <span>{isProcessing ? 'Processing...' : 'Complete Sale'}</span>

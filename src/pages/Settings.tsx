@@ -42,11 +42,11 @@ const Settings: React.FC = () => {
   return (
     <div className="space-y-6">
       <div className="flex justify-between items-center">
-        <h1 className="text-3xl font-bold text-gray-900">Settings</h1>
+        <h1 className="text-3xl font-bold text-gray-900 dark:text-white">Settings</h1>
         <button
           onClick={saveSettings}
           disabled={isSaving}
-          className="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 disabled:bg-gray-400 transition-colors font-medium flex items-center space-x-2"
+          className="bg-blue-600 text-white dark:text-black px-6 py-2 rounded-lg hover:bg-blue-700 disabled:bg-gray-400 transition-colors font-medium flex items-center space-x-2"
         >
           <Save size={20} />
           <span>{isSaving ? 'Saving...' : 'Save Settings'}</span>
@@ -65,10 +65,10 @@ const Settings: React.FC = () => {
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         {/* Business Settings */}
-        <div className="bg-white rounded-xl shadow-sm p-6 border border-gray-100">
+        <div className="bg-white dark:bg-gray-900  rounded-xl shadow-sm p-6 border border-gray-100 dark:border-white-100">
           <div className="flex items-center space-x-3 mb-6">
             <Building className="text-blue-600" size={24} />
-            <h2 className="text-xl font-semibold text-gray-900">Business Information</h2>
+            <h2 className="text-xl font-semibold text-gray-900 dark:text-white">Business Information</h2>
           </div>
 
           <div className="space-y-4">
@@ -105,7 +105,7 @@ const Settings: React.FC = () => {
                   placeholder="12.0"
                 />
               </div>
-              <p className="text-sm text-gray-500 mt-1">
+              <p className="text-sm text-gray-500 dark:text-white mt-1">
                 Current rate: {(settings.taxRate * 100).toFixed(1)}%
               </p>
             </div>
@@ -113,10 +113,10 @@ const Settings: React.FC = () => {
         </div>
 
         {/* Receipt Settings */}
-        <div className="bg-white rounded-xl shadow-sm p-6 border border-gray-100">
+        <div className="bg-white dark:bg-gray-900  rounded-xl shadow-sm p-6 border border-gray-100 dark:border-white-100">
           <div className="flex items-center space-x-3 mb-6">
             <Receipt className="text-green-600" size={24} />
-            <h2 className="text-xl font-semibold text-gray-900">Receipt Settings</h2>
+            <h2 className="text-xl font-semibold text-gray-900 dark:text-white">Receipt Settings</h2>
           </div>
 
           <div className="space-y-4">

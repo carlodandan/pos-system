@@ -24,14 +24,14 @@ const Login: React.FC = () => {
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 to-indigo-100">
-      <div className="max-w-md w-full bg-white rounded-2xl shadow-xl p-8">
+      <div className="max-w-md w-full bg-white dark:bg-gray-900 rounded-2xl shadow-xl p-8">
         <div className="text-center mb-8">
           <div className="flex justify-center mb-4">
             <div className="bg-blue-600 p-3 rounded-2xl">
-              <ShoppingCart className="text-white" size={32} />
+              <ShoppingCart className="text-white dark:text-black" size={32} />
             </div>
           </div>
-          <h1 className="text-3xl font-bold text-gray-900">POS System</h1>
+          <h1 className="text-3xl font-bold text-gray-900 dark:text-white">POS System</h1>
           <p className="text-gray-600 mt-2">Sign in to your account</p>
         </div>
 
@@ -89,7 +89,7 @@ const Login: React.FC = () => {
 
           <button
             type="submit"
-            className="w-full bg-blue-600 text-white py-3 px-4 rounded-lg hover:bg-blue-700 focus:ring-4 focus:ring-blue-200 transition-colors font-medium"
+            className="w-full bg-blue-600 text-white dark:text-black py-3 px-4 rounded-lg hover:bg-blue-700 focus:ring-4 focus:ring-blue-200 transition-colors font-medium"
           >
             Sign in
           </button>
