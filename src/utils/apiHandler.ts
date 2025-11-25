@@ -39,6 +39,18 @@ export const apiHandler = {
     return handleResponse(response);
   },
 
+  deleteProduct: async (id: string): Promise<void> => {
+    const response = await fetch(`${API_BASE}/products/${id}`, {
+      method: 'DELETE',
+    });
+    
+    if (!response.ok) {
+      throw new Error(`Failed to delete product: ${response.statusText}`);
+    }
+    
+    return response.json();
+  },
+
   // Sales
   getSales: async () => {
     const response = await fetch(`${API_BASE}/sales`);

@@ -65,22 +65,22 @@ const Settings: React.FC = () => {
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         {/* Business Settings */}
-        <div className="bg-white dark:bg-gray-900  rounded-xl shadow-sm p-6 border border-gray-100 dark:border-white-100">
+        <div className="bg-white dark:bg-gray-900 rounded-xl shadow-sm p-6 border border-gray-100 dark:border-white-100">
           <div className="flex items-center space-x-3 mb-6">
             <Building className="text-blue-600" size={24} />
-            <h2 className="text-xl font-semibold text-gray-900 dark:text-white">Business Information</h2>
+            <h2 className="text-xl font-semibold text-gray-900 text-black dark:text-white">Business Information</h2>
           </div>
 
           <div className="space-y-4">
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
+              <label className="block text-sm font-medium text-gray-700 dark:text-white mb-2">
                 Business Name
               </label>
               <input
                 type="text"
                 value={settings.businessName}
                 onChange={(e) => setSettings(prev => ({ ...prev, businessName: e.target.value }))}
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-black dark:text-white"
                 placeholder="Enter business name"
               />
             </div>
@@ -101,7 +101,7 @@ const Settings: React.FC = () => {
                     const value = parseFloat(e.target.value) || 0;
                     setSettings(prev => ({ ...prev, taxRate: value / 100 }));
                   }}
-                  className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                  className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-black dark:text-white"
                   placeholder="12.0"
                 />
               </div>
@@ -121,27 +121,27 @@ const Settings: React.FC = () => {
 
           <div className="space-y-4">
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
+              <label className="block text-sm font-medium text-gray-700 dark:text-white mb-2">
                 Receipt Header
               </label>
               <textarea
                 value={settings.receiptHeader}
                 onChange={(e) => setSettings(prev => ({ ...prev, receiptHeader: e.target.value }))}
                 rows={3}
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-black dark:text-white"
                 placeholder="Enter receipt header message"
               />
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
+              <label className="block text-sm font-medium text-gray-700 dark:text-white mb-2">
                 Receipt Footer
               </label>
               <textarea
                 value={settings.receiptFooter}
                 onChange={(e) => setSettings(prev => ({ ...prev, receiptFooter: e.target.value }))}
                 rows={3}
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-black dark:text-white"
                 placeholder="Enter receipt footer message"
               />
             </div>

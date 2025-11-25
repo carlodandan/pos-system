@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import { Download, DollarSign, ShoppingCart, TrendingUp } from 'lucide-react';
+import React, { useState, useEffect, useRef } from 'react';
+import { Download, DollarSign, ShoppingCart, TrendingUp, Receipt } from 'lucide-react';
 import { apiHandler } from '../utils/apiHandler';
 import type { Product, Sale } from '../types/pos.types';
 
@@ -16,30 +16,193 @@ const Reports: React.FC = () => {
     loadData();
   }, []);
 
-const loadData = async () => {
-  try {
-    const [salesData, productsData] = await Promise.all([
-      apiHandler.getSales(),
-      apiHandler.getProducts()
-    ]);
-    
-    // Ensure we have arrays
-    const salesArray = Array.isArray(salesData) ? salesData : [];
-    const productsArray = Array.isArray(productsData) ? productsData : [];
-    
-    setSales(salesArray);
-    setProducts(productsArray);
-  } catch (error) {
-    console.error('Error loading report data:', error);
-    setSales([]);
-    setProducts([]);
-  }
-};
+  // Print receipt function
+  const printReceipt = (sale: Sale) => {
+    const receiptWindow = window.open('', '_blank', 'width=280,height=600,scrollbars=yes');
+    if (!receiptWindow) return;
 
-const filteredSales = Array.isArray(sales) ? sales.filter(sale => {
-  const saleDate = new Date(sale.createdAt).toISOString().split('T')[0];
-  return saleDate >= dateRange.start && saleDate <= dateRange.end;
-}) : [];
+    const settings = JSON.parse(localStorage.getItem('posSettings') || '{}');
+    
+    // Create complete HTML structure
+    const receiptHTML = `
+      <!DOCTYPE html>
+      <html>
+      <head>
+        <title>Receipt - ${sale.invoiceNumber}</title>
+        <style>
+          body { 
+            font-family: 'Courier New', monospace; 
+            font-size: 12px; 
+            margin: 5px; 
+            line-height: 1.2;
+            background: white;
+            width: 250px;
+            max-width: 250px;
+            margin-left: auto;
+            margin-right: auto;
+          }
+          .header { text-align: center; margin-bottom: 8px; }
+          .business-name { font-weight: bold; font-size: 14px; }
+          .divider { border-top: 1px dashed #000; margin: 6px 0; }
+          .item-row { display: flex; justify-content: space-between; margin: 1px 0; }
+          .item-name { flex: 2; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+          .item-details { flex: 1; text-align: right; white-space: nowrap; }
+          .total-row { font-weight: bold; margin-top: 4px; }
+          .footer { text-align: center; margin-top: 12px; font-size: 10px; }
+          .print-btn { 
+            background: #007bff; 
+            color: white; 
+            border: none; 
+            padding: 6px 12px; 
+            border-radius: 4px; 
+            cursor: pointer; 
+            margin: 8px 0;
+            font-family: Arial, sans-serif;
+            font-size: 11px;
+          }
+          .print-btn:hover { background: #0056b3; }
+          .controls { text-align: center; margin-top: 8px; }
+          
+          /* Print styles */
+          @media print {
+            @page {
+              margin: 0;
+              padding: 0;
+              size: 58mm auto;
+            }
+            body { 
+              margin: 0 auto;
+              padding: 5px;
+              width: 58mm;
+              max-width: 58mm;
+              font-size: 11px;
+              box-sizing: border-box;
+            }
+            * {
+              box-sizing: border-box;
+            }
+            .controls { display: none; }
+            .print-btn { display: none; }
+            .business-name { font-size: 13px; }
+            .divider { border-top: 1px solid #000; }
+            .item-name { max-width: 35mm; }
+            .item-details { max-width: 20mm; }
+          }
+        </style>
+      </head>
+      <body>
+        <div class="header">
+          <div class="business-name">${settings.businessName || 'My Business'}</div>
+          <div>POS Receipt</div>
+        </div>
+        
+        <div class="divider"></div>
+        
+        <div class="item-row">
+          <div>Invoice: ${sale.invoiceNumber}</div>
+        </div>
+        <div class="item-row">
+          <div>Date: ${new Date(sale.createdAt).toLocaleDateString()}</div>
+          <div>${new Date(sale.createdAt).toLocaleTimeString()}</div>
+        </div>
+        <div class="item-row">
+          <div>Cashier: ${sale.cashier}</div>
+        </div>
+        
+        <div class="divider"></div>
+        
+        ${sale.items.map(item => `
+          <div class="item-row">
+            <div class="item-name">${item.name}</div>
+            <div class="item-details">${item.quantity} x ₱${item.price.toFixed(2)}</div>
+          </div>
+          <div class="item-row">
+            <div>${item.sku}</div>
+            <div class="item-details">₱${item.total.toFixed(2)}</div>
+          </div>
+        `).join('')}
+        
+        <div class="divider"></div>
+        
+        <div class="item-row">
+          <div>Subtotal:</div>
+          <div>₱${sale.subtotal.toFixed(2)}</div>
+        </div>
+        <div class="item-row">
+          <div>Tax:</div>
+          <div>₱${sale.tax.toFixed(2)}</div>
+        </div>
+        ${sale.discount > 0 ? `
+        <div class="item-row">
+          <div>Discount:</div>
+          <div>-₱${sale.discount.toFixed(2)}</div>
+        </div>
+        ` : ''}
+        <div class="item-row total-row">
+          <div>TOTAL:</div>
+          <div>₱${sale.total.toFixed(2)}</div>
+        </div>
+        
+        <div class="divider"></div>
+        
+        <div class="item-row">
+          <div>Payment:</div>
+          <div>${sale.paymentMethod.toUpperCase()}</div>
+        </div>
+        <div class="item-row">
+          <div>Amount Paid:</div>
+          <div>₱${sale.amountPaid.toFixed(2)}</div>
+        </div>
+        ${sale.change > 0 ? `
+        <div class="item-row">
+          <div>Change:</div>
+          <div>₱${sale.change.toFixed(2)}</div>
+        </div>
+        ` : ''}
+        
+        <div class="divider"></div>
+        
+        <div class="footer">
+          <div>${settings.receiptHeader || 'Thank you for your purchase!'}</div>
+          <div>${settings.receiptFooter || 'We hope to see you again soon!'}</div>
+        </div>
+
+        <div class="controls">
+          <button class="print-btn" onclick="window.print()">Print Receipt</button>
+        </div>
+      </body>
+      </html>
+    `;
+
+    // Use innerHTML to set the complete document content
+    receiptWindow.document.documentElement.innerHTML = receiptHTML;
+    receiptWindow.focus();
+  };
+
+  const loadData = async () => {
+    try {
+      const [salesData, productsData] = await Promise.all([
+        apiHandler.getSales(),
+        apiHandler.getProducts()
+      ]);
+      
+      // Ensure we have arrays
+      const salesArray = Array.isArray(salesData) ? salesData : [];
+      const productsArray = Array.isArray(productsData) ? productsData : [];
+      
+      setSales(salesArray);
+      setProducts(productsArray);
+    } catch (error) {
+      console.error('Error loading report data:', error);
+      setSales([]);
+      setProducts([]);
+    }
+  };
+
+  const filteredSales = Array.isArray(sales) ? sales.filter(sale => {
+    const saleDate = new Date(sale.createdAt).toISOString().split('T')[0];
+    return saleDate >= dateRange.start && saleDate <= dateRange.end;
+  }) : [];
 
   const getSalesStats = () => {
     const totalSales = filteredSales.reduce((sum, sale) => sum + sale.total, 0);
@@ -308,6 +471,7 @@ const filteredSales = Array.isArray(sales) ? sales.filter(sale => {
                     <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-white uppercase tracking-wider">Tax</th>
                     <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-white uppercase tracking-wider">Discount</th>
                     <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-white uppercase tracking-wider">Total</th>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-white uppercase tracking-wider">Actions</th>
                   </>
                 )}
                 {reportType === 'products' && (
@@ -331,7 +495,7 @@ const filteredSales = Array.isArray(sales) ? sales.filter(sale => {
             </thead>
             <tbody className="bg-white dark:bg-gray-900 divide-y divide-gray-200">
               {reportType === 'sales' && filteredSales.map((sale) => (
-                <tr key={sale.id} className="hover:bg-gray-200 dark:hover:bg-gray-600">
+                <tr key={sale.id} className="hover:bg-gray-50 dark:hover:bg-gray-700">
                   <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-white">
                     {new Date(sale.createdAt).toLocaleDateString()}
                   </td>
@@ -352,6 +516,16 @@ const filteredSales = Array.isArray(sales) ? sales.filter(sale => {
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap text-sm font-semibold text-green-600">
                     ₱{sale.total.toFixed(2)}
+                  </td>
+                  <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                    <button
+                      onClick={() => printReceipt(sale)}
+                      className="bg-blue-600 text-white px-3 py-1 rounded hover:bg-blue-700 transition-colors flex items-center space-x-1 text-xs"
+                      title="Print Receipt"
+                    >
+                      <Receipt size={12} />
+                      <span>Receipt</span>
+                    </button>
                   </td>
                 </tr>
               ))}

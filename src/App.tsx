@@ -55,7 +55,12 @@ function AppContent() {
       } catch (error) {
         console.error('❌ Backend connection failed:', error);
         setIsBackendConnected(false);
-        setConnectionError(error.message);
+        // Fix the TypeScript error here:
+        if (error instanceof Error) {
+          setConnectionError(error.message);
+        } else {
+          setConnectionError('An unknown error occurred');
+        }
       } finally {
         setIsCheckingBackend(false);
       }

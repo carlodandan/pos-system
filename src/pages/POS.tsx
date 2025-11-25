@@ -185,7 +185,7 @@ const POS: React.FC = () => {
         change: payment.change,
         cashier: user?.username || 'Unknown',
         customer: '',
-        createdAt: new Date().toISOString() // FIX: Convert to ISO string
+        createdAt: new Date()
       };
 
       console.log('Processing sale:', sale);
@@ -236,7 +236,11 @@ const POS: React.FC = () => {
       
     } catch (error) {
       console.error('Error processing sale:', error);
-      alert(`Error processing sale: ${error.message}`);
+      if (error instanceof Error) {
+        alert(`Error processing sale: ${error.message}`);
+      } else {
+        alert('Error processing sale: An unknown error occurred');
+      }
     } finally {
       setIsProcessing(false);
     }
@@ -247,7 +251,7 @@ const POS: React.FC = () => {
       {/* Products Section */}
       <div className="flex-1 bg-white dark:bg-gray-900 rounded-xl shadow-sm p-6 border border-gray-100 dark:border-white-100">
         <div className="mb-6">
-          <h1 className="text-2xl font-bold text-gray-900 dark:text-white dark:text-black mb-2">Point of Sale</h1>
+          <h1 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">Point of Sale</h1>
           <div className="relative">
             <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" size={20} />
             <input
@@ -255,7 +259,7 @@ const POS: React.FC = () => {
               placeholder="Search products by name or SKU..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+              className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-black dark:text-white"
             />
           </div>
         </div>
