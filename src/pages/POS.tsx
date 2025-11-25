@@ -368,7 +368,7 @@ const POS: React.FC = () => {
             type="number"
             value={discount}
             onChange={(e) => setDiscount(Math.max(0, parseFloat(e.target.value) || 0))}
-            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-black dark:text-white"
             placeholder="0.00"
           />
         </div>
@@ -379,7 +379,7 @@ const POS: React.FC = () => {
           <select
             value={payment.method}
             onChange={(e) => setPayment(prev => ({ ...prev, method: e.target.value as any }))}
-            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-black dark:text-white"
           >
             <option value="cash">Cash</option>
             <option value="card">Credit/Debit Card</option>
@@ -395,7 +395,7 @@ const POS: React.FC = () => {
             type="number"
             value={payment.amountPaid}
             onChange={(e) => setPayment(prev => ({ ...prev, amountPaid: parseFloat(e.target.value) || 0 }))}
-            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-black dark:text-white"
             placeholder="0.00"
           />
         </div>
