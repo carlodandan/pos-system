@@ -52,7 +52,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
           )}
           <button
             onClick={toggleSidebar}
-            className="p-1 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
+            className="p-1 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors text-black dark:text-white"
           >
             {isSidebarMinimized ? <ChevronRight size={20} /> : <ChevronLeft size={20} />}
           </button>
