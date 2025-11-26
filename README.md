@@ -12,7 +12,7 @@
 </p>
 <p align="center">
     POS-System is a modern point of sale (POS) web application built with React, TypeScript, and Vite. It includes authentication, dynamic routing, and a connection to a backend API for product, inventory, and sales management. The app features a sleek UI styled with Tailwind CSS and a mobile-responsive layout.
-    <img alt="pos-system" src="https://raw.githubusercontent.com/carlodandan/pos-system/refs/heads/dev/public/pages/dashboard.web"/>
+    <img alt="pos-system" src="https://raw.githubusercontent.com/carlodandan/pos-system/refs/heads/dev/public/pages/dashboard.webp"/>
  </p>
 
 ## Features
