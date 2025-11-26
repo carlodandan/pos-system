@@ -24,7 +24,7 @@ POS-App is a modern point of sale (POS) web application built with React, TypeSc
 
 - Node.js (v16 or higher recommended)
 - npm (comes with Node.js)
-- A Google Cloud project with OAuth 2.0 credentials (Google Client ID)
+- A Google Cloud project with OAuth 2.0 credentials (Google Client ID), visit [WIKI](https://github.com/carlodandan/pos-system/wiki) to know how.
 
 ## Getting Started
 
