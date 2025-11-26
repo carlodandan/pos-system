@@ -1,0 +1,26 @@
+User-agent: *
+Allow: /
+
+# Allow all pages
+Allow: /pos
+Allow: /inventory
+Allow: /products
+Allow: /reports
+Allow: /settings
+
+# Allow Configs
+Allow: /*.xml
+Allow: /*.webp
+Allow: /*.txt
+Allow: /*.json
+
+# Disallow admin or private pages (if any)
+Disallow: /admin/
+Disallow: /private/
+Disallow: /api/
+
+# Sitemap location
+Sitemap: https://localhost:5173/sitemap.xml
+
+# Crawl delay (optional - adjust based on your server capacity)
+Crawl-delay: 1

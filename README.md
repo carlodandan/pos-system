@@ -1,7 +1,19 @@
-# POS-App
-
-## Overview
-POS-App is a modern point of sale (POS) web application built with React, TypeScript, and Vite. It includes authentication, dynamic routing, and a connection to a backend API for product, inventory, and sales management. The app features a sleek UI styled with Tailwind CSS and a mobile-responsive layout.
+<p align="center">
+    <h3 align="center">Point-of-Sale System</h3>
+    <p align="center">
+        <a href="https://github.com/carlodandan/pos-system">
+            <img src="https://img.shields.io/github/stars/carlodandan/pos-system" alt="Github Stars">
+        </a>
+      <img src="https://img.shields.io/github/issues/carlodandan/pos-system" alt="Github Issues">
+     <a href="https://github.com/carlodandan/pos-system">
+      <img src="https://img.shields.io/github/forks/carlodandan/pos-system" alt="Github Forks" />
+    </a>
+</p>
+</p>
+<p align="center">
+    POS-System is a modern point of sale (POS) web application built with React, TypeScript, and Vite. It includes authentication, dynamic routing, and a connection to a backend API for product, inventory, and sales management. The app features a sleek UI styled with Tailwind CSS and a mobile-responsive layout.
+    <img alt="pos-system" src="https://raw.githubusercontent.com/carlodandan/pos-system/refs/heads/dev/public/pages/dashboard.web"/>
+ </p>
 
 ## Features
 - User authentication and protected routes
