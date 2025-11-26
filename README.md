@@ -21,8 +21,10 @@ POS-App is a modern point of sale (POS) web application built with React, TypeSc
 - Lucide Icons and React Icons
 
 ## Prerequisites
-- Node.js (v16 or above)
-- npm (v8 or above)
+
+- Node.js (v16 or higher recommended)
+- npm (comes with Node.js)
+- A Google Cloud project with OAuth 2.0 credentials (Google Client ID)
 
 ## Getting Started
 
