@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useAuth } from '../contexts/AuthContext';
 import { useTheme } from '../contexts/ThemeContext';
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { 
   LayoutDashboard, 
   ShoppingCart, 
@@ -24,6 +24,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
   const { user, logout } = useAuth();
   const { theme, toggleTheme } = useTheme();
   const location = useLocation();
+  const navigate = useNavigate();
   const [isSidebarMinimized, setIsSidebarMinimized] = useState(false);
 
   const navigation = [
@@ -39,15 +40,19 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
     setIsSidebarMinimized(!isSidebarMinimized);
   };
 
+  const handleLogout = () => {
+    logout();
+    navigate('/');
+  };
+
   return (
     <div className="flex h-screen bg-gray-100 dark:bg-gray-900">
-      {/* Sidebar */}
       <div className={`${isSidebarMinimized ? 'w-16' : 'w-64'} bg-white dark:bg-gray-800 shadow-lg transition-all duration-300 ease-in-out`}>
         <div className="p-4 border-b dark:border-gray-700 flex items-center justify-between">
           {!isSidebarMinimized && (
             <div>
               <h1 className="text-xl font-bold text-gray-800 dark:text-white">POS System</h1>
-              <p className="text-sm text-gray-600 dark:text-gray-400">Welcome, {user?.username}</p>
+              <p className="text-sm text-gray-600 dark:text-gray-400">Welcome, {user?.name}</p>
             </div>
           )}
           <button
@@ -94,7 +99,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
             {!isSidebarMinimized && <span>{theme === 'light' ? 'Dark Mode' : 'Light Mode'}</span>}
           </button>
           <button
-            onClick={logout}
+            onClick={handleLogout}
             className={`flex items-center ${isSidebarMinimized ? 'justify-center' : 'space-x-3'} px-3 py-2 text-black dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-600 rounded-lg transition-colors`}
             title={isSidebarMinimized ? 'Logout' : undefined}
           >
@@ -104,7 +109,6 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
         </div>
       </div>
 
-      {/* Main Content */}
       <div className="flex-1 overflow-auto">
         <main className="p-6">
           {children}

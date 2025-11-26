@@ -10,6 +10,7 @@ import Inventory from './pages/Inventory';
 import Reports from './pages/Reports';
 import Settings from './pages/Settings';
 import Layout from './components/Layout';
+import SheetSetup from './components/SheetSetup';
 
 const ProtectedRoute: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const { user, isLoading } = useAuth();
@@ -24,10 +25,9 @@ const ProtectedRoute: React.FC<{ children: React.ReactNode }> = ({ children }) =
 function AppContent() {
   const [isBackendConnected, setIsBackendConnected] = useState(false);
   const [isCheckingBackend, setIsCheckingBackend] = useState(true);
-  const [connectionError, setConnectionError] = useState<string | null>(null); // Add this line
+  const [connectionError, setConnectionError] = useState<string | null>(null);
   const { user, isLoading } = useAuth();
 
-  // Check backend connection on app start
   useEffect(() => {
     const checkBackendConnection = async () => {
       try {
@@ -35,7 +35,6 @@ function AppContent() {
         setConnectionError(null);
         console.log('Testing backend connection...');
         
-        // Test health endpoint first
         const healthResponse = await fetch('https://pos-backend-red.vercel.app/health');
         if (!healthResponse.ok) {
           throw new Error(`Health check failed: ${healthResponse.status}`);
@@ -44,7 +43,6 @@ function AppContent() {
         const healthData = await healthResponse.json();
         console.log('Health check:', healthData);
         
-        // Then test API endpoint
         const response = await fetch('https://pos-backend-red.vercel.app/api/products');
         if (!response.ok) {
           throw new Error(`API test failed: ${response.status}`);
@@ -55,7 +53,6 @@ function AppContent() {
       } catch (error) {
         console.error('❌ Backend connection failed:', error);
         setIsBackendConnected(false);
-        // Fix the TypeScript error here:
         if (error instanceof Error) {
           setConnectionError(error.message);
         } else {
@@ -73,6 +70,8 @@ function AppContent() {
     }
   }, [user]);
 
+  const showSheetSetup = user && !user.spreadsheetId;
+
   if (isLoading || isCheckingBackend) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-gray-50 dark:bg-gray-700">
@@ -88,6 +87,14 @@ function AppContent() {
 
   if (!user) {
     return <Login />;
+  }
+
+  if (showSheetSetup) {
+    return (
+      <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
+        <SheetSetup onComplete={() => window.location.reload()} />
+      </div>
+    );
   }
 
   if (!isBackendConnected) {
@@ -126,7 +133,6 @@ function AppContent() {
     );
   }
 
-  // Main app content
   return (
     <Layout>
       <Routes>

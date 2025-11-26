@@ -1,8 +1,11 @@
 export interface User {
   id: string;
-  username: string;
+  name: string;
+  email: string;
   role: 'admin' | 'cashier';
   lastLogin?: Date;
+  picture?: string;
+  spreadsheetId?: string;
 }
 
 export interface CartItem {

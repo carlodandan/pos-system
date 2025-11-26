@@ -19,7 +19,6 @@ body {
   box-sizing: border-box;
 }
 
-/* Custom scrollbar */
 ::-webkit-scrollbar {
   width: 6px;
   height: 6px;
@@ -39,7 +38,6 @@ body {
   background: #a8a8a8;
 }
 
-/* Dark mode scrollbar */
 @media (prefers-color-scheme: dark) {
   ::-webkit-scrollbar-track {
     background: #374151;

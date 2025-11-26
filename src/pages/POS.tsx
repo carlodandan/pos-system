@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Search, Plus, Minus, Trash2, ShoppingCart, Calculator } from 'lucide-react';
 import { apiHandler } from '../utils/apiHandler';
 import type { Product, Sale, SaleItem } from '../types/pos.types';
-import type { CartItem, PaymentDetails } from '../types/index';
+import type { User, CartItem, PaymentDetails } from '../types/index';
 import { useAuth } from '../contexts/AuthContext';
 
 const POS: React.FC = () => {
@@ -183,18 +183,16 @@ const POS: React.FC = () => {
         paymentMethod: payment.method,
         amountPaid: payment.amountPaid,
         change: payment.change,
-        cashier: user?.username || 'Unknown',
+        cashier: user?.role || 'Unknown',
         customer: '',
         createdAt: new Date()
       };
 
       console.log('Processing sale:', sale);
 
-      // Save sale to backend
       const saleResult = await apiHandler.addSale(sale);
       console.log('Sale saved:', saleResult);
 
-      // Update product stock for each item in cart
       const stockUpdatePromises = cart.map(async (item) => {
         const product = products.find(p => p.id === item.productId);
         if (product) {
@@ -220,10 +218,8 @@ const POS: React.FC = () => {
         }
       });
 
-      // Wait for all stock updates to complete
       await Promise.all(stockUpdatePromises);
 
-      // Reset form
       setCart([]);
       setPayment({ method: 'cash', amountPaid: 0, change: 0 });
       setDiscount(0);
@@ -231,7 +227,6 @@ const POS: React.FC = () => {
 
       alert('Sale completed successfully!');
       
-      // Refresh product list to get updated stock
       await loadProducts();
       
     } catch (error) {
@@ -247,40 +242,39 @@ const POS: React.FC = () => {
   };
 
   return (
-    <div className="h-full flex flex-col lg:flex-row gap-6">
-      {/* Products Section */}
-      <div className="flex-1 bg-white dark:bg-gray-900 rounded-xl shadow-sm p-6 border border-gray-100 dark:border-white-100">
-        <div className="mb-6">
-          <h1 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">Point of Sale</h1>
+    <div className="h-full flex flex-col lg:flex-row gap-4 sm:gap-6 p-3 sm:p-0">
+      <div className="flex-1 bg-white dark:bg-gray-900 rounded-xl shadow-sm p-4 sm:p-6 border border-gray-100 dark:border-white-100">
+        <div className="mb-4 sm:mb-6">
+          <h1 className="text-xl sm:text-2xl font-bold text-gray-900 dark:text-white mb-2">Point of Sale</h1>
           <div className="relative">
-            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" size={20} />
+            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" size={18} />
             <input
               type="text"
               placeholder="Search products by name or SKU..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-black dark:text-white"
+              className="w-full pl-10 pr-4 py-2 sm:py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-black dark:text-white text-sm sm:text-base"
             />
           </div>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 max-h-[60vh] overflow-y-auto">
+        <div className="grid grid-cols-1 xs:grid-cols-2 md:grid-cols-3 lg:grid-cols-2 xl:grid-cols-3 gap-3 sm:gap-4 max-h-[50vh] sm:max-h-[60vh] overflow-y-auto">
           {filteredProducts.map(product => (
             <div
               key={product.id}
-              className="border border-gray-200 rounded-lg p-4 hover:shadow-md transition-shadow cursor-pointer"
+              className="border border-gray-200 rounded-lg p-3 sm:p-4 hover:shadow-md transition-shadow cursor-pointer"
               onClick={() => addToCart(product)}
             >
               <div className="flex justify-between items-start mb-2">
-                <h3 className="font-semibold text-gray-900 dark:text-white">{product.name}</h3>
-                <span className="text-sm text-gray-500 dark:text-white bg-gray-100 dark:bg-gray-900 px-2 py-1 rounded">
+                <h3 className="font-semibold text-gray-900 dark:text-white text-sm sm:text-base truncate flex-1 mr-2">{product.name}</h3>
+                <span className="text-xs sm:text-sm text-gray-500 dark:text-white bg-gray-100 dark:bg-gray-900 px-2 py-1 rounded flex-shrink-0">
                   {product.sku}
                 </span>
               </div>
-              <p className="text-gray-600 text-sm mb-2">{product.category}</p>
+              <p className="text-gray-600 text-xs sm:text-sm mb-2 truncate">{product.category}</p>
               <div className="flex justify-between items-center">
-                <span className="text-lg font-bold text-green-600">₱{product.price.toFixed(2)}</span>
-                <span className={`text-sm ${product.stock < 10 ? 'text-red-600' : 'text-gray-500 dark:text-white'}`}>
+                <span className="text-base sm:text-lg font-bold text-green-600">₱{product.price.toFixed(2)}</span>
+                <span className={`text-xs sm:text-sm ${product.stock < 10 ? 'text-red-600' : 'text-gray-500 dark:text-white'}`}>
                   Stock: {product.stock}
                 </span>
               </div>
@@ -289,97 +283,92 @@ const POS: React.FC = () => {
         </div>
       </div>
 
-      {/* Cart & Payment Section */}
-      <div className="w-full lg:w-96 bg-white dark:bg-gray-900  rounded-xl shadow-sm p-6 border border-gray-100 dark:border-white-100">
-        <div className="flex items-center space-x-2 mb-6">
-          <ShoppingCart size={24} className="text-blue-600" />
-          <h2 className="text-xl font-semibold text-gray-900 dark:text-white">Shopping Cart</h2>
+      <div className="w-full lg:w-80 xl:w-96 bg-white dark:bg-gray-900 rounded-xl shadow-sm p-4 sm:p-6 border border-gray-100 dark:border-white-100">
+        <div className="flex items-center space-x-2 mb-4 sm:mb-6">
+          <ShoppingCart size={20} className="text-blue-600" />
+          <h2 className="text-lg sm:text-xl font-semibold text-gray-900 dark:text-white">Shopping Cart</h2>
           {cart.length > 0 && (
-            <span className="bg-blue-600 text-white dark:text-black text-sm px-2 py-1 rounded-full">
+            <span className="bg-blue-600 text-white dark:text-black text-xs sm:text-sm px-2 py-1 rounded-full">
               {cart.reduce((sum, item) => sum + item.quantity, 0)}
             </span>
           )}
         </div>
 
-        {/* Cart Items */}
-        <div className="space-y-3 mb-6 max-h-64 overflow-y-auto">
+        <div className="space-y-2 sm:space-y-3 mb-4 sm:mb-6 max-h-48 sm:max-h-64 overflow-y-auto">
           {cart.length === 0 ? (
-            <p className="text-gray-500 dark:text-white text-center py-4">Cart is empty</p>
+            <p className="text-gray-500 dark:text-white text-center py-4 text-sm sm:text-base">Cart is empty</p>
           ) : (
             cart.map(item => (
-              <div key={item.productId} className="flex items-center justify-between p-3 border border-gray-100 rounded-lg">
-                <div className="flex-1">
-                  <p className="font-medium text-gray-900 dark:text-white">{item.name}</p>
-                  <p className="text-sm text-gray-600">₱{item.price.toFixed(2)}</p>
+              <div key={item.productId} className="flex items-center justify-between p-2 sm:p-3 border border-gray-100 rounded-lg">
+                <div className="flex-1 min-w-0">
+                  <p className="font-medium text-gray-900 dark:text-white text-sm sm:text-base truncate">{item.name}</p>
+                  <p className="text-xs sm:text-sm text-gray-600">₱{item.price.toFixed(2)}</p>
                 </div>
-                <div className="flex items-center space-x-2">
+                <div className="flex items-center space-x-1 sm:space-x-2 ml-2">
                   <button
                     onClick={() => updateQuantity(item.productId, item.quantity - 1)}
                     className="p-1 text-gray-500 dark:text-white hover:text-red-600 transition-colors"
                   >
-                    <Minus size={16} />
+                    <Minus size={14} />
                   </button>
-                  <span className="w-8 text-center font-medium">{item.quantity}</span>
+                  <span className="w-6 sm:w-8 text-center font-medium text-sm sm:text-base">{item.quantity}</span>
                   <button
                     onClick={() => updateQuantity(item.productId, item.quantity + 1)}
                     className="p-1 text-gray-500 dark:text-white hover:text-green-600 transition-colors"
                   >
-                    <Plus size={16} />
+                    <Plus size={14} />
                   </button>
                   <button
                     onClick={() => removeFromCart(item.productId)}
-                    className="p-1 text-gray-500 dark:text-white hover:text-red-600 transition-colors ml-2"
+                    className="p-1 text-gray-500 dark:text-white hover:text-red-600 transition-colors ml-1 sm:ml-2"
                   >
-                    <Trash2 size={16} />
+                    <Trash2 size={14} />
                   </button>
                 </div>
-                <div className="text-right w-20">
-                  <p className="font-semibold text-gray-900 dark:text-white">₱{item.total.toFixed(2)}</p>
+                <div className="text-right w-16 sm:w-20 ml-2">
+                  <p className="font-semibold text-gray-900 dark:text-white text-sm sm:text-base">₱{item.total.toFixed(2)}</p>
                 </div>
               </div>
             ))
           )}
         </div>
 
-        {/* Totals */}
-        <div className="space-y-2 mb-6">
-          <div className="flex justify-between text-sm">
+        <div className="space-y-1 sm:space-y-2 mb-4 sm:mb-6">
+          <div className="flex justify-between text-xs sm:text-sm">
             <span className="text-gray-600">Subtotal:</span>
             <span className="font-medium">₱{getSubtotal().toFixed(2)}</span>
           </div>
-          <div className="flex justify-between text-sm">
+          <div className="flex justify-between text-xs sm:text-sm">
             <span className="text-gray-600">Tax ({taxRate * 100}%):</span>
             <span className="font-medium">₱{getTax().toFixed(2)}</span>
           </div>
-          <div className="flex justify-between text-sm">
+          <div className="flex justify-between text-xs sm:text-sm">
             <span className="text-gray-600">Discount:</span>
             <span className="font-medium text-red-600">-₱{discount.toFixed(2)}</span>
           </div>
-          <div className="flex justify-between text-lg font-bold border-t pt-2">
+          <div className="flex justify-between text-base sm:text-lg font-bold border-t pt-2">
             <span>Total:</span>
             <span className="text-green-600">₱{getTotal().toFixed(2)}</span>
           </div>
         </div>
 
-        {/* Discount */}
-        <div className="mb-4">
-          <label className="block text-sm font-medium text-gray-700 mb-2">Discount</label>
+        <div className="mb-3 sm:mb-4">
+          <label className="block text-xs sm:text-sm font-medium text-gray-700 mb-1 sm:mb-2">Discount</label>
           <input
             type="number"
             value={discount}
             onChange={(e) => setDiscount(Math.max(0, parseFloat(e.target.value) || 0))}
-            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-black dark:text-white"
+            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-black dark:text-white text-sm sm:text-base"
             placeholder="0.00"
           />
         </div>
 
-        {/* Payment Method */}
-        <div className="mb-4">
-          <label className="block text-sm font-medium text-gray-700 mb-2">Payment Method</label>
+        <div className="mb-3 sm:mb-4">
+          <label className="block text-xs sm:text-sm font-medium text-gray-700 mb-1 sm:mb-2">Payment Method</label>
           <select
             value={payment.method}
             onChange={(e) => setPayment(prev => ({ ...prev, method: e.target.value as any }))}
-            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-black dark:text-white"
+            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-black dark:text-white text-sm sm:text-base"
           >
             <option value="cash">Cash</option>
             <option value="card">Credit/Debit Card</option>
@@ -388,35 +377,32 @@ const POS: React.FC = () => {
           </select>
         </div>
 
-        {/* Amount Paid */}
-        <div className="mb-6">
-          <label className="block text-sm font-medium text-gray-700 mb-2">Amount Paid</label>
+        <div className="mb-4 sm:mb-6">
+          <label className="block text-xs sm:text-sm font-medium text-gray-700 mb-1 sm:mb-2">Amount Paid</label>
           <input
             type="number"
             value={payment.amountPaid}
             onChange={(e) => setPayment(prev => ({ ...prev, amountPaid: parseFloat(e.target.value) || 0 }))}
-            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-black dark:text-white"
+            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-black dark:text-white text-sm sm:text-base"
             placeholder="0.00"
           />
         </div>
 
-        {/* Change */}
         {payment.change > 0 && (
-          <div className="mb-4 p-3 bg-green-50 border border-green-200 rounded-lg">
+          <div className="mb-3 sm:mb-4 p-2 sm:p-3 bg-green-50 border border-green-200 rounded-lg">
             <div className="flex justify-between items-center">
-              <span className="text-green-800 font-medium">Change:</span>
-              <span className="text-green-800 font-bold">₱{payment.change.toFixed(2)}</span>
+              <span className="text-green-800 font-medium text-sm sm:text-base">Change:</span>
+              <span className="text-green-800 font-bold text-sm sm:text-base">₱{payment.change.toFixed(2)}</span>
             </div>
           </div>
         )}
 
-        {/* Process Sale Button */}
         <button
           onClick={processSale}
           disabled={cart.length === 0 || payment.amountPaid < getTotal() || isProcessing}
-          className="w-full bg-green-600 text-white dark:text-black py-3 px-4 rounded-lg hover:bg-green-700 disabled:bg-gray-400 disabled:cursor-not-allowed transition-colors font-medium flex items-center justify-center space-x-2"
+          className="w-full bg-green-600 text-white dark:text-black py-2 sm:py-3 px-4 rounded-lg hover:bg-green-700 disabled:bg-gray-400 disabled:cursor-not-allowed transition-colors font-medium flex items-center justify-center space-x-2 text-sm sm:text-base"
         >
-          <Calculator size={20} />
+          <Calculator size={18} />
           <span>{isProcessing ? 'Processing...' : 'Complete Sale'}</span>
         </button>
       </div>

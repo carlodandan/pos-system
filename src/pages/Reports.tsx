@@ -16,14 +16,12 @@ const Reports: React.FC = () => {
     loadData();
   }, []);
 
-  // Print receipt function
   const printReceipt = (sale: Sale) => {
     const receiptWindow = window.open('', '_blank', 'width=280,height=600,scrollbars=yes');
     if (!receiptWindow) return;
 
     const settings = JSON.parse(localStorage.getItem('posSettings') || '{}');
     
-    // Create complete HTML structure
     const receiptHTML = `
       <!DOCTYPE html>
       <html>
@@ -174,7 +172,6 @@ const Reports: React.FC = () => {
       </html>
     `;
 
-    // Use innerHTML to set the complete document content
     receiptWindow.document.documentElement.innerHTML = receiptHTML;
     receiptWindow.focus();
   };
@@ -186,7 +183,6 @@ const Reports: React.FC = () => {
         apiHandler.getProducts()
       ]);
       
-      // Ensure we have arrays
       const salesArray = Array.isArray(salesData) ? salesData : [];
       const productsArray = Array.isArray(productsData) ? productsData : [];
       
@@ -347,27 +343,26 @@ const Reports: React.FC = () => {
   const profitStats = getProfitStats();
 
   return (
-    <div className="space-y-6">
-      <div className="flex justify-between items-center">
-        <h1 className="text-3xl font-bold text-gray-900 dark:text-white">Reports & Analytics</h1>
+    <div className="space-y-4 sm:space-y-6 p-3 sm:p-0">
+      <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4">
+        <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 dark:text-white">Reports & Analytics</h1>
         <button
           onClick={exportToCSV}
-          className="bg-green-600 text-white dark:text-black px-4 py-2 rounded-lg hover:bg-green-700 transition-colors font-medium flex items-center space-x-2"
+          className="bg-green-600 text-white dark:text-black px-4 py-2 rounded-lg hover:bg-green-700 transition-colors font-medium flex items-center justify-center space-x-2 text-sm sm:text-base w-full sm:w-auto order-first sm:order-last"
         >
-          <Download size={20} />
+          <Download size={18} />
           <span>Export CSV</span>
         </button>
       </div>
 
-      {/* Filters */}
-      <div className="bg-white dark:bg-gray-900  rounded-xl shadow-sm p-6 border border-gray-100 dark:border-white-100">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+      <div className="bg-white dark:bg-gray-900 rounded-xl shadow-sm p-4 sm:p-6 border border-gray-100 dark:border-white-100">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-3 sm:gap-4">
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">Report Type</label>
+            <label className="block text-sm font-medium text-gray-700 mb-1 sm:mb-2">Report Type</label>
             <select
               value={reportType}
               onChange={(e) => setReportType(e.target.value as any)}
-              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-black dark:text-white dark:bg-gray-800"
+              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-black dark:text-white dark:bg-gray-800 text-sm sm:text-base"
             >
               <option value="sales">Sales Report</option>
               <option value="products">Product Performance</option>
@@ -376,82 +371,80 @@ const Reports: React.FC = () => {
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">Start Date</label>
+            <label className="block text-sm font-medium text-gray-700 mb-1 sm:mb-2">Start Date</label>
             <input
               type="date"
               value={dateRange.start}
               onChange={(e) => setDateRange(prev => ({ ...prev, start: e.target.value }))}
-              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-black dark:text-white"
+              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-black dark:text-white text-sm sm:text-base"
             />
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">End Date</label>
+            <label className="block text-sm font-medium text-gray-700 mb-1 sm:mb-2">End Date</label>
             <input
               type="date"
               value={dateRange.end}
               onChange={(e) => setDateRange(prev => ({ ...prev, end: e.target.value }))}
-              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-black dark:text-white"
+              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-black dark:text-white text-sm sm:text-base"
             />
           </div>
         </div>
       </div>
 
-      {/* Summary Stats */}
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
-        <div className="bg-white dark:bg-gray-900  rounded-xl shadow-sm p-6 border border-gray-100 dark:border-white-100">
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 lg:gap-6">
+        <div className="bg-white dark:bg-gray-900 rounded-xl shadow-sm p-4 sm:p-6 border border-gray-100 dark:border-white-100">
           <div className="flex items-center justify-between">
-            <div>
-              <p className="text-sm font-medium text-gray-600">Total Sales</p>
-              <p className="text-2xl font-bold text-gray-900 dark:text-white mt-2">₱{stats.totalSales.toFixed(2)}</p>
+            <div className="flex-1 min-w-0">
+              <p className="text-xs sm:text-sm font-medium text-gray-600 truncate">Total Sales</p>
+              <p className="text-lg sm:text-xl lg:text-2xl font-bold text-gray-900 dark:text-white mt-1 sm:mt-2 truncate">₱{stats.totalSales.toFixed(2)}</p>
             </div>
-            <div className="bg-green-500 p-3 rounded-full">
-              <DollarSign className="text-white dark:text-black" size={24} />
+            <div className="bg-green-500 p-2 sm:p-3 rounded-full flex-shrink-0 ml-3">
+              <DollarSign className="text-white dark:text-black" size={20} />
             </div>
           </div>
         </div>
 
-        <div className="bg-white dark:bg-gray-900  rounded-xl shadow-sm p-6 border border-gray-100 dark:border-white-100">
+        <div className="bg-white dark:bg-gray-900 rounded-xl shadow-sm p-4 sm:p-6 border border-gray-100 dark:border-white-100">
           <div className="flex items-center justify-between">
-            <div>
-              <p className="text-sm font-medium text-gray-600">Transactions</p>
-              <p className="text-2xl font-bold text-gray-900 dark:text-white mt-2">{stats.totalTransactions}</p>
+            <div className="flex-1 min-w-0">
+              <p className="text-xs sm:text-sm font-medium text-gray-600 truncate">Transactions</p>
+              <p className="text-lg sm:text-xl lg:text-2xl font-bold text-gray-900 dark:text-white mt-1 sm:mt-2 truncate">{stats.totalTransactions}</p>
             </div>
-            <div className="bg-blue-500 p-3 rounded-full">
-              <ShoppingCart className="text-white dark:text-black" size={24} />
+            <div className="bg-blue-500 p-2 sm:p-3 rounded-full flex-shrink-0 ml-3">
+              <ShoppingCart className="text-white dark:text-black" size={20} />
             </div>
           </div>
         </div>
 
-        <div className="bg-white dark:bg-gray-900  rounded-xl shadow-sm p-6 border border-gray-100 dark:border-white-100">
+        <div className="bg-white dark:bg-gray-900 rounded-xl shadow-sm p-4 sm:p-6 border border-gray-100 dark:border-white-100">
           <div className="flex items-center justify-between">
-            <div>
-              <p className="text-sm font-medium text-gray-600">Average Sale</p>
-              <p className="text-2xl font-bold text-gray-900 dark:text-white mt-2">₱{stats.averageSale.toFixed(2)}</p>
+            <div className="flex-1 min-w-0">
+              <p className="text-xs sm:text-sm font-medium text-gray-600 truncate">Average Sale</p>
+              <p className="text-lg sm:text-xl lg:text-2xl font-bold text-gray-900 dark:text-white mt-1 sm:mt-2 truncate">₱{stats.averageSale.toFixed(2)}</p>
             </div>
-            <div className="bg-purple-500 p-3 rounded-full">
-              <TrendingUp className="text-white dark:text-black" size={24} />
+            <div className="bg-purple-500 p-2 sm:p-3 rounded-full flex-shrink-0 ml-3">
+              <TrendingUp className="text-white dark:text-black" size={20} />
             </div>
           </div>
         </div>
 
-        <div className="bg-white dark:bg-gray-900  rounded-xl shadow-sm p-6 border border-gray-100 dark:border-white-100">
+        <div className="bg-white dark:bg-gray-900 rounded-xl shadow-sm p-4 sm:p-6 border border-gray-100 dark:border-white-100">
           <div className="flex items-center justify-between">
-            <div>
-              <p className="text-sm font-medium text-gray-600">Total Profit</p>
-              <p className="text-2xl font-bold text-gray-900 dark:text-white mt-2">₱{profitStats.totalProfit.toFixed(2)}</p>
+            <div className="flex-1 min-w-0">
+              <p className="text-xs sm:text-sm font-medium text-gray-600 truncate">Total Profit</p>
+              <p className="text-lg sm:text-xl lg:text-2xl font-bold text-gray-900 dark:text-white mt-1 sm:mt-2 truncate">₱{profitStats.totalProfit.toFixed(2)}</p>
             </div>
-            <div className="bg-yellow-500 p-3 rounded-full">
-              <DollarSign className="text-white dark:text-black" size={24} />
+            <div className="bg-yellow-500 p-2 sm:p-3 rounded-full flex-shrink-0 ml-3">
+              <DollarSign className="text-white dark:text-black" size={20} />
             </div>
           </div>
         </div>
       </div>
 
-      {/* Report Content */}
       <div className="bg-white dark:bg-gray-900 rounded-xl shadow-sm border border-gray-100 overflow-hidden">
-        <div className="p-6 border-b border-gray-200">
-          <h2 className="text-xl font-semibold text-gray-900 dark:text-white">
+        <div className="p-4 sm:p-6 border-b border-gray-200">
+          <h2 className="text-lg sm:text-xl font-semibold text-gray-900 dark:text-white">
             {reportType === 'sales' && 'Sales Report'}
             {reportType === 'products' && 'Product Performance'}
             {reportType === 'profit' && 'Profit Analysis'}
@@ -459,36 +452,36 @@ const Reports: React.FC = () => {
         </div>
 
         <div className="overflow-x-auto">
-          <table className="w-full">
+          <table className="w-full min-w-[800px]">
             <thead className="bg-gray-50 dark:bg-gray-700">
               <tr>
                 {reportType === 'sales' && (
                   <>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-white uppercase tracking-wider">Date</th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-white uppercase tracking-wider">Invoice</th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-white uppercase tracking-wider">Payment Method</th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-white uppercase tracking-wider">Subtotal</th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-white uppercase tracking-wider">Tax</th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-white uppercase tracking-wider">Discount</th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-white uppercase tracking-wider">Total</th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-white uppercase tracking-wider">Actions</th>
+                    <th className="px-4 sm:px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-white uppercase tracking-wider">Date</th>
+                    <th className="px-4 sm:px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-white uppercase tracking-wider">Invoice</th>
+                    <th className="px-4 sm:px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-white uppercase tracking-wider">Payment</th>
+                    <th className="px-4 sm:px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-white uppercase tracking-wider">Subtotal</th>
+                    <th className="px-4 sm:px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-white uppercase tracking-wider">Tax</th>
+                    <th className="px-4 sm:px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-white uppercase tracking-wider">Discount</th>
+                    <th className="px-4 sm:px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-white uppercase tracking-wider">Total</th>
+                    <th className="px-4 sm:px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-white uppercase tracking-wider">Actions</th>
                   </>
                 )}
                 {reportType === 'products' && (
                   <>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-white uppercase tracking-wider">Product</th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-white uppercase tracking-wider">SKU</th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-white uppercase tracking-wider">Quantity Sold</th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-white uppercase tracking-wider">Revenue</th>
+                    <th className="px-4 sm:px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-white uppercase tracking-wider">Product</th>
+                    <th className="px-4 sm:px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-white uppercase tracking-wider">SKU</th>
+                    <th className="px-4 sm:px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-white uppercase tracking-wider">Qty Sold</th>
+                    <th className="px-4 sm:px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-white uppercase tracking-wider">Revenue</th>
                   </>
                 )}
                 {reportType === 'profit' && (
                   <>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-white uppercase tracking-wider">Product</th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-white uppercase tracking-wider">SKU</th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-white uppercase tracking-wider">Revenue</th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-white uppercase tracking-wider">Cost</th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-white uppercase tracking-wider">Profit</th>
+                    <th className="px-4 sm:px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-white uppercase tracking-wider">Product</th>
+                    <th className="px-4 sm:px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-white uppercase tracking-wider">SKU</th>
+                    <th className="px-4 sm:px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-white uppercase tracking-wider">Revenue</th>
+                    <th className="px-4 sm:px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-white uppercase tracking-wider">Cost</th>
+                    <th className="px-4 sm:px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-white uppercase tracking-wider">Profit</th>
                   </>
                 )}
               </tr>
@@ -496,35 +489,36 @@ const Reports: React.FC = () => {
             <tbody className="bg-white dark:bg-gray-900 divide-y divide-gray-200">
               {reportType === 'sales' && filteredSales.map((sale) => (
                 <tr key={sale.id} className="hover:bg-gray-50 dark:hover:bg-gray-700">
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-white">
+                  <td className="px-4 sm:px-6 py-4 text-sm text-gray-900 dark:text-white whitespace-nowrap">
                     {new Date(sale.createdAt).toLocaleDateString()}
                   </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-white">
+                  <td className="px-4 sm:px-6 py-4 text-sm text-gray-900 dark:text-white font-mono truncate max-w-[100px]">
                     {sale.invoiceNumber}
                   </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-white capitalize">
+                  <td className="px-4 sm:px-6 py-4 text-sm text-gray-900 dark:text-white capitalize truncate max-w-[80px]">
                     {sale.paymentMethod}
                   </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-white">
+                  <td className="px-4 sm:px-6 py-4 text-sm text-gray-900 dark:text-white whitespace-nowrap">
                     ₱{sale.subtotal.toFixed(2)}
                   </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-white">
+                  <td className="px-4 sm:px-6 py-4 text-sm text-gray-900 dark:text-white whitespace-nowrap">
                     ₱{sale.tax.toFixed(2)}
                   </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-white">
+                  <td className="px-4 sm:px-6 py-4 text-sm text-gray-900 dark:text-white whitespace-nowrap">
                     ₱{sale.discount.toFixed(2)}
                   </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm font-semibold text-green-600">
+                  <td className="px-4 sm:px-6 py-4 text-sm font-semibold text-green-600 whitespace-nowrap">
                     ₱{sale.total.toFixed(2)}
                   </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                  <td className="px-4 sm:px-6 py-4 text-sm font-medium">
                     <button
                       onClick={() => printReceipt(sale)}
-                      className="bg-blue-600 text-white px-3 py-1 rounded hover:bg-blue-700 transition-colors flex items-center space-x-1 text-xs"
+                      className="bg-blue-600 text-white px-2 sm:px-3 py-1 rounded hover:bg-blue-700 transition-colors flex items-center space-x-1 text-xs"
                       title="Print Receipt"
                     >
                       <Receipt size={12} />
-                      <span>Receipt</span>
+                      <span className="hidden xs:inline">Receipt</span>
+                      <span className="xs:hidden">Print</span>
                     </button>
                   </td>
                 </tr>
@@ -532,16 +526,16 @@ const Reports: React.FC = () => {
 
               {reportType === 'products' && productStats.map((item) => (
                 <tr key={item.productId} className="hover:bg-gray-50 dark:bg-gray-700">
-                  <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900 dark:text-white">
+                  <td className="px-4 sm:px-6 py-4 text-sm font-medium text-gray-900 dark:text-white truncate max-w-[120px]">
                     {item.name}
                   </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-white">
+                  <td className="px-4 sm:px-6 py-4 text-sm text-gray-900 dark:text-white font-mono truncate max-w-[80px]">
                     {item.sku}
                   </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-white">
+                  <td className="px-4 sm:px-6 py-4 text-sm text-gray-900 dark:text-white whitespace-nowrap">
                     {item.quantity}
                   </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm font-semibold text-green-600">
+                  <td className="px-4 sm:px-6 py-4 text-sm font-semibold text-green-600 whitespace-nowrap">
                     ₱{item.revenue.toFixed(2)}
                   </td>
                 </tr>
@@ -549,25 +543,121 @@ const Reports: React.FC = () => {
 
               {reportType === 'profit' && profitStats.productBreakdown.map((item) => (
                 <tr key={item.productId} className="hover:bg-gray-50 dark:bg-gray-700">
-                  <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900 dark:text-white">
+                  <td className="px-4 sm:px-6 py-4 text-sm font-medium text-gray-900 dark:text-white truncate max-w-[120px]">
                     {item.name}
                   </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-white">
+                  <td className="px-4 sm:px-6 py-4 text-sm text-gray-900 dark:text-white font-mono truncate max-w-[80px]">
                     {item.sku}
                   </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-white">
+                  <td className="px-4 sm:px-6 py-4 text-sm text-gray-900 dark:text-white whitespace-nowrap">
                     ₱{item.revenue.toFixed(2)}
                   </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-white">
+                  <td className="px-4 sm:px-6 py-4 text-sm text-gray-900 dark:text-white whitespace-nowrap">
                     ₱{item.cost.toFixed(2)}
                   </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm font-semibold text-green-600">
+                  <td className="px-4 sm:px-6 py-4 text-sm font-semibold text-green-600 whitespace-nowrap">
                     ₱{item.profit.toFixed(2)}
                   </td>
                 </tr>
               ))}
             </tbody>
           </table>
+        </div>
+
+        <div className="block sm:hidden">
+          {reportType === 'sales' && filteredSales.map((sale) => (
+            <div key={sale.id} className="border-b border-gray-200 p-4 hover:bg-gray-50 dark:hover:bg-gray-700">
+              <div className="flex justify-between items-start mb-3">
+                <div className="flex-1 min-w-0">
+                  <h3 className="font-medium text-gray-900 dark:text-white truncate">{sale.invoiceNumber}</h3>
+                  <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">
+                    {new Date(sale.createdAt).toLocaleDateString()} • {sale.paymentMethod}
+                  </p>
+                </div>
+                <span className="text-lg font-semibold text-green-600 flex-shrink-0 ml-2">
+                  ₱{sale.total.toFixed(2)}
+                </span>
+              </div>
+              
+              <div className="grid grid-cols-2 gap-4 mb-3 text-sm">
+                <div>
+                  <p className="text-gray-500 dark:text-gray-400">Subtotal</p>
+                  <p className="text-gray-900 dark:text-white">₱{sale.subtotal.toFixed(2)}</p>
+                </div>
+                <div>
+                  <p className="text-gray-500 dark:text-gray-400">Tax</p>
+                  <p className="text-gray-900 dark:text-white">₱{sale.tax.toFixed(2)}</p>
+                </div>
+                <div>
+                  <p className="text-gray-500 dark:text-gray-400">Discount</p>
+                  <p className="text-gray-900 dark:text-white">₱{sale.discount.toFixed(2)}</p>
+                </div>
+                <div>
+                  <p className="text-gray-500 dark:text-gray-400">Items</p>
+                  <p className="text-gray-900 dark:text-white">{sale.items.length}</p>
+                </div>
+              </div>
+
+              <div className="flex justify-between items-center">
+                <span className="text-xs text-gray-500 dark:text-gray-400">Cashier: {sale.cashier}</span>
+                <button
+                  onClick={() => printReceipt(sale)}
+                  className="bg-blue-600 text-white px-3 py-1 rounded hover:bg-blue-700 transition-colors flex items-center space-x-1 text-xs"
+                >
+                  <Receipt size={12} />
+                  <span>Receipt</span>
+                </button>
+              </div>
+            </div>
+          ))}
+
+          {reportType === 'products' && productStats.map((item) => (
+            <div key={item.productId} className="border-b border-gray-200 p-4 hover:bg-gray-50 dark:hover:bg-gray-700">
+              <div className="flex justify-between items-start mb-2">
+                <div className="flex-1 min-w-0">
+                  <h3 className="font-medium text-gray-900 dark:text-white truncate">{item.name}</h3>
+                  <p className="text-sm text-gray-600 dark:text-gray-400 font-mono">{item.sku}</p>
+                </div>
+                <span className="text-lg font-semibold text-green-600 flex-shrink-0 ml-2">
+                  ₱{item.revenue.toFixed(2)}
+                </span>
+              </div>
+              
+              <div className="flex justify-between items-center">
+                <span className="text-sm text-gray-600 dark:text-gray-400">
+                  Sold: <span className="font-medium text-gray-900 dark:text-white">{item.quantity}</span>
+                </span>
+                <span className="text-sm text-gray-600 dark:text-gray-400">
+                  Revenue: <span className="font-medium text-green-600">₱{item.revenue.toFixed(2)}</span>
+                </span>
+              </div>
+            </div>
+          ))}
+
+          {reportType === 'profit' && profitStats.productBreakdown.map((item) => (
+            <div key={item.productId} className="border-b border-gray-200 p-4 hover:bg-gray-50 dark:hover:bg-gray-700">
+              <div className="flex justify-between items-start mb-2">
+                <div className="flex-1 min-w-0">
+                  <h3 className="font-medium text-gray-900 dark:text-white truncate">{item.name}</h3>
+                  <p className="text-sm text-gray-600 dark:text-gray-400 font-mono">{item.sku}</p>
+                </div>
+                <span className={`text-lg font-semibold ${item.profit >= 0 ? 'text-green-600' : 'text-red-600'} flex-shrink-0 ml-2`}>
+                  ₱{item.profit.toFixed(2)}
+                </span>
+              </div>
+              
+              <div className="grid grid-cols-2 gap-4 text-sm">
+                <div>
+                  <p className="text-gray-500 dark:text-gray-400">Revenue</p>
+                  <p className="text-gray-900 dark:text-white">₱{item.revenue.toFixed(2)}</p>
+                </div>
+                <div>
+                  <p className="text-gray-500 dark:text-gray-400">Cost</p>
+                  <p className="text-gray-900 dark:text-white">₱{item.cost.toFixed(2)}</p>
+                </div>
+              </div>
+            </div>
+          ))}
         </div>
       </div>
     </div>
