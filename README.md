@@ -36,7 +36,7 @@
 
 - Node.js (v16 or higher recommended)
 - npm (comes with Node.js)
-- A Google Cloud project with OAuth 2.0 credentials (Google Client ID), visit [WIKI](https://github.com/carlodandan/pos-system/wiki) to know how.
+- A Google Cloud project with OAuth 2.0 credentials (Google Client ID), visit [WIKI](https://github.com/carlodandan/pos-system/wiki/POS-System-(Google‐related-WIKI)) to know how.
 
 ## Getting Started
 
