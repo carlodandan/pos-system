@@ -15,75 +15,59 @@
     <img alt="pos-system" src="https://raw.githubusercontent.com/carlodandan/pos-system/refs/heads/dev/public/pages/dashboard.webp"/>
  </p>
 
+## Documentation
+
+Comprehensive documentation is available in the [`docs/`](./docs) directory:
+
+- 📖 **[Setup & Verification Guide](./docs/setup-guide.md)**: 1-click template copy, Apps Script deployment, and connection testing.
+- 🏗️ **[System Architecture](./docs/architecture.md)**: C4 diagrams, concurrency control, and API specs.
+- 📋 **[Product Specification](./docs/product.md)**: Personas, feature requirements, and business rules.
+- 🎨 **[Design System](./docs/design.md)**: Swiss minimalism, design tokens, touch targets, and thermal receipt printing.
+
 ## Features
-- User authentication and protected routes
-- Dashboard, POS, Products, Inventory, Reports, and Settings pages
-- Integration with Google Spreadsheets for backend data storage
-- Backend health check and connection status
-- Dark/light theme support
+
+- **Bring-Your-Own-Sheet (BYOS)**: Uses a standard Google Sheet as the 100% merchant-owned database.
+- **Serverless Architecture**: Powered by Google Apps Script Web App — zero server costs and zero maintenance.
+- **Tap-to-Add Register**: Fast, touch-friendly product cards with live in-cart quantity indicators.
+- **High-Contrast Checkout**: Tabular figures, percentage discounts, quick cash tender shortcuts, and instant change computation.
+- **80mm Thermal Receipt Printing**: Formatted specifically for standard POS receipt printers with `@media print` CSS.
+- **Dynamic Cashier Management**: Header dropdown dynamically populated from the `Cashiers` sheet tab.
+- **In-App Settings Hub**: 1-click template copy, latency diagnostics, store profile, and currency customization.
+- **Progressive Web App (PWA)**: Offline precaching and standalone app installation support.
 
 ## Tech Stack
-- React 19
-- TypeScript
-- Vite (build tool)
-- React Router DOM (routing)
-- Tailwind CSS (styling)
-- Framer Motion (animations)
-- ExcelJS, File-Saver, jspdf (report/export utilities)
-- Lucide Icons and React Icons
 
-## Prerequisites
+- **Frontend**: React 19, TypeScript, Vite, Tailwind CSS, Lucide Icons
+- **Backend**: Google Apps Script (JavaScript V8 Runtime, LockService)
+- **Database**: Google Sheets (4 Sheets: `Products`, `Sales`, `SaleItems`, `Cashiers`)
+- **PWA**: `vite-plugin-pwa`, Workbox
 
-- Node.js (v16 or higher recommended)
-- npm (comes with Node.js)
-- A Google Cloud project with OAuth 2.0 credentials (Google Client ID), visit [WIKI](https://github.com/carlodandan/pos-system/wiki/POS-System-(Google‐related-WIKI)) to know how.
+## Quick Start
 
-## Getting Started
-
-### 1. Clone the Repository
+### 1. Install Dependencies
 ```bash
-git clone <repository-url>
-cd pos-app
+pnpm install
 ```
 
-### 2. Prepare Environment Variables (.env)
-Look for [.env.example](https://github.com/carlodandan/pos-system/blob/dev/.env.example) for example.
+### 2. Set Up Google Sheets Database & API
+Follow the step-by-step **[Setup Guide](./docs/setup-guide.md)** or use the **Settings** tab inside the app to copy the official Google Sheet template and deploy the Apps Script Web App.
 
-### 3. Install Dependencies
+### 3. Run Development Server
 ```bash
-npm install
+pnpm dev
 ```
+Open [http://localhost:5173](http://localhost:5173) in your browser.
 
-### 4. Run the Development Server
+### 4. Build for Production
 ```bash
-npm run dev
+pnpm build
 ```
-This will start the app in development mode. Open [http://localhost:5173](http://localhost:5173) to view it in your browser. The page will reload if you make edits.
-
-### 5. Build for Production
-```bash
-npm run build
-```
-Builds the app for production to the `dist` folder.
-
-### 6. Preview Production Build
-```bash
-npm run preview
-```
-Serves the production build locally for testing. This will start the app in semi-production mode. Open [http://localhost:4173](http://localhost:4173) to view it in your browser. The page will reload if you make edits.
-
-### Other: Backend
-Make sure the Backend server is running fine. [POS-System-Backend](https://github.com/carlodandan/pos-system-backend)
 
 ## Additional Scripts
 
-- `npm run lint`: Lint the codebase with ESLint.
-- `npm run type-check`: Run TypeScript type checking without emitting output.
-
-## Notes
-- The app requires an active connection to the backend API (configured in the app) and a properly set up Google Spreadsheet for data storage.
-- The app uses dynamic routing, and protected routes redirect unauthenticated users to the login screen.
-- For theme customization, see the `ThemeContext` in `src/contexts/ThemeContext.tsx`.
+- `pnpm run type-check`: Run TypeScript type checking without emitting output.
+- `pnpm run lint`: Lint the codebase with ESLint.
+- `node scripts/test-api.mjs "<YOUR_WEB_APP_URL>"`: Run the automated API integration test suite.
 
 ## License
 This project is licensed under the MIT License.

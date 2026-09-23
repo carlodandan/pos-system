@@ -63,3 +63,42 @@ body {
 .dark ::-webkit-scrollbar-thumb:hover {
   background: #9ca3af;
 }
+
+/* POS Thermal Receipt Print Styling */
+@media print {
+  body {
+    background: #ffffff !important;
+    color: #000000 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+
+  body * {
+    visibility: hidden;
+  }
+
+  #printable-receipt,
+  #printable-receipt * {
+    visibility: visible;
+  }
+
+  #printable-receipt {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 80mm !important;
+    max-width: 80mm !important;
+    margin: 0 auto !important;
+    padding: 12px !important;
+    box-shadow: none !important;
+    border: none !important;
+    background: #ffffff !important;
+    color: #000000 !important;
+  }
+
+  /* Hide modal buttons during print */
+  #printable-receipt button,
+  .no-print {
+    display: none !important;
+  }
+}
