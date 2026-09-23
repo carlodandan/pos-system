@@ -45,12 +45,14 @@ C4Context
 C4Container
     title Container Diagram -  Point-of-Sale System System
 
-    Container(spa, "Single-Page Application (SPA)", "React 19, TypeScript, Vite, Tailwind CSS", "Provides touch-friendly POS register, cart management, receipt printing, and BYOS setup.")
-    Container(pwa_sw, "PWA Service Worker", "Workbox, CacheFirst / NetworkFirst", "Pre-caches static assets for offline launch and fast startup.")
+    Container(spa, "Frontend UI (SPA)", "React 19, TypeScript, Vite, Tailwind CSS", "Provides touch-friendly POS register, cart management, receipt printing, and BYOS setup.")
+    Container(pwa_sw, "PWA Service Worker", "Workbox, CacheFirst / NetworkFirst", "Pre-caches static assets for web browser offline launch and fast startup.")
+    Container(tauri_desktop, "Tauri v2 Desktop Shell", "Rust 2021, Windows WebView2", "Wraps the SPA into a lightweight, native Windows executable / installer (.msi / .exe).")
     Container(gas_api, "Google Apps Script Backend", "JavaScript V8 Runtime", "Implements business logic: product lookups, atomic stock decrements, sale records, and cashier retrieval.")
     ContainerDb(gsheets, "Google Sheets Database", "Google Spreadsheet (4 Tabs)", "Stores Products, Sales, SaleItems, and Cashiers relational data.")
 
-    Rel(spa, pwa_sw, "Registers and caches assets")
+    Rel(spa, pwa_sw, "Registers and caches assets (Web mode)")
+    Rel(tauri_desktop, spa, "Embeds and renders in native webview (Desktop mode)")
     Rel(spa, gas_api, "Sends JSON payloads via fetch()", "HTTPS / text/plain")
     Rel(gas_api, gsheets, "Queries & mutates rows with LockService", "Google App Services")
 ```

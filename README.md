@@ -58,15 +58,26 @@ pnpm dev
 ```
 Open [http://localhost:5173](http://localhost:5173) in your browser.
 
-### 4. Build for Production
+### 4. Build for Production (Web / PWA)
 ```bash
 pnpm build
+```
+
+### 5. Run & Build Native Desktop App (Tauri v2)
+```bash
+# Run desktop app in development
+pnpm tauri:dev
+
+# Build Windows native installer (.msi / .exe)
+pnpm tauri:build
 ```
 
 ## Additional Scripts
 
 - `pnpm run type-check`: Run TypeScript type checking without emitting output.
 - `pnpm run lint`: Lint the codebase with ESLint.
+- `pnpm tauri:dev`: Launch the native Windows desktop app in development mode.
+- `pnpm tauri:build`: Compile native desktop installer (.exe / .msi).
 - `node scripts/test-api.mjs "<YOUR_WEB_APP_URL>"`: Run the automated API integration test suite.
 
 ## License

@@ -48,6 +48,15 @@ Visual identity and interaction design:
 
 ---
 
+## Build Targets
+
+| Target | Dev Command | Build Command | Output |
+| :--- | :--- | :--- | :--- |
+| **Web App / PWA** | `pnpm dev` | `pnpm build` | `dist/` (Static assets + Service Worker) |
+| **Windows Desktop App** | `pnpm tauri:dev` | `pnpm tauri:build` | `src-tauri/target/release/` (`.exe` / `.msi`) |
+
+---
+
 ## Quick Links
 
 - [Google Apps Script Backend Code](../google-apps-script/Code.js)

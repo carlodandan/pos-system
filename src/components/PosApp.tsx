@@ -2,6 +2,7 @@ import { useState, useEffect, useMemo } from 'react';
 import { getProducts, getProduct, createSale, addProduct, getCashiers, isConfiguredApiUrl } from '../api/posApi';
 import type { Product, SaleRequest, SaleResult, StoreSettings, Cashier } from '../types/pos';
 import SettingsPage from './SettingsPage';
+import { isTauri } from '../utils/platform';
 import {
   ShoppingCart,
   Database,
@@ -544,9 +545,12 @@ export default function PosApp() {
                 <span className="bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 text-[10px] px-2 py-0.5 rounded-full font-semibold uppercase tracking-wider font-mono">
                   Sheets API
                 </span>
+                <span className="bg-slate-800/80 text-slate-300 border border-slate-700 text-[10px] px-2 py-0.5 rounded-full font-semibold uppercase tracking-wider font-mono hidden sm:inline-block">
+                  {isTauri() ? 'Desktop' : 'Web / PWA'}
+                </span>
               </div>
               <p className="text-[11px] text-slate-400 hidden sm:block">
-                {import.meta.env.DEV ? 'Google Sheets Database • Local Vite Dev' : 'Point of Sale Terminal'}
+                {import.meta.env.DEV ? 'Google Sheets Database • Local Vite Dev' : isTauri() ? 'Windows Native Desktop POS' : 'Point of Sale Web Terminal'}
               </p>
             </div>
           </div>
