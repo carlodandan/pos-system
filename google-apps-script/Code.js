@@ -1,6 +1,22 @@
 /**
  * Google Apps Script POS Backend
  * Architecture: React/Vite POS -> Google Apps Script Web App API -> Google Sheets
+ * 
+ * DEPLOYMENT INSTRUCTIONS:
+ * 1. Click Deploy > New deployment.
+ * 2. Select type: Web app.
+ * 3. Configuration:
+ *    - Execute as: Me (<your-email>)
+ *    - Who has access: Anyone
+ * 4. Click Deploy.
+ * 5. When prompted with "Authorization required":
+ *    - Click "Authorize access" and select your Google account.
+ *    - On the "Google hasn't verified this app" warning screen, click "Advanced".
+ *    - Click "Go to POS API (unsafe)" and then click "Allow".
+ *    (Note: This standard Google warning appears because the custom script hasn't undergone
+ *     commercial OAuth verification, and alerts you that anyone with the Web App URL can
+ *     modify spreadsheet data. Keep your Web App URL confidential).
+ * 6. Copy the generated Web App URL into your POS frontend Settings tab or .env.local.
  */
 
 // ==========================================

@@ -5,7 +5,6 @@ import SettingsPage from './SettingsPage';
 import { isTauri } from '../utils/platform';
 import {
   ShoppingCart,
-  Database,
   RefreshCw,
   Search,
   Plus,
@@ -19,7 +18,6 @@ import {
   ShieldCheck,
   CreditCard,
   Layers,
-  RotateCcw,
   PackagePlus,
   X,
   Settings,

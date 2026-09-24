@@ -270,7 +270,7 @@ export default function SettingsPage({
               Quick 2-Minute Deployment Steps
             </h4>
 
-            <div className="grid grid-cols-1 md:grid-cols-4 gap-3 text-xs">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3 text-xs">
               <div className="bg-slate-950 border border-slate-800/80 rounded-xl p-3.5 space-y-1.5">
                 <div className="w-6 h-6 rounded-full bg-emerald-500/20 text-emerald-400 font-bold text-[11px] flex items-center justify-center">
                   1
@@ -302,13 +302,31 @@ export default function SettingsPage({
               </div>
 
               <div className="bg-slate-950 border border-slate-800/80 rounded-xl p-3.5 space-y-1.5">
-                <div className="w-6 h-6 rounded-full bg-purple-500/20 text-purple-400 font-bold text-[11px] flex items-center justify-center">
+                <div className="w-6 h-6 rounded-full bg-orange-500/20 text-orange-400 font-bold text-[11px] flex items-center justify-center">
                   4
+                </div>
+                <div className="font-bold text-white">Authorize Access</div>
+                <p className="text-slate-400 text-[11px] leading-relaxed">
+                  Click <strong>Authorize access</strong>, pick your account, click <strong>Advanced ➔ Go to ... (unsafe)</strong>, then <strong>Allow</strong>.
+                </p>
+              </div>
+
+              <div className="bg-slate-950 border border-slate-800/80 rounded-xl p-3.5 space-y-1.5">
+                <div className="w-6 h-6 rounded-full bg-purple-500/20 text-purple-400 font-bold text-[11px] flex items-center justify-center">
+                  5
                 </div>
                 <div className="font-bold text-white">Paste URL Below</div>
                 <p className="text-slate-400 text-[11px] leading-relaxed">
-                  Copy the generated Web App URL (`.../exec`), paste it into the field below, and click <strong>Save & Connect</strong>.
+                  Copy the generated Web App URL (<code className="text-cyan-300">.../exec</code>), paste it into the field below, and click <strong>Save & Connect</strong>.
                 </p>
+              </div>
+            </div>
+
+            {/* Security Notice Callout */}
+            <div className="bg-amber-950/20 border border-amber-500/30 rounded-xl p-3 text-[11px] text-amber-200/90 leading-relaxed flex items-start gap-2.5">
+              <AlertTriangle className="w-4 h-4 text-amber-400 shrink-0 mt-0.5" />
+              <div>
+                <strong className="font-semibold text-amber-300">Why does Google show an &quot;Unsafe&quot; warning?</strong> Google displays this standard warning for custom scripts that haven&apos;t undergone commercial verification. Because the Web App is configured with access set to &quot;Anyone&quot;, anyone who has access to your Web App URL can modify anything on your sheet. This setting is required so POS terminals can sync without logging into Google. Treat your Web App URL as private!
               </div>
             </div>
           </div>

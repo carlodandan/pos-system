@@ -89,7 +89,7 @@ graph TD
 
 ### 3.5 Bring-Your-Own-Sheet (BYOS) Settings Hub
 - **1-Click Template Copy**: Direct link opening Google Drive's `/copy` dialog to duplicate the official spreadsheet template.
-- **Interactive Setup Guide**: 4-step accordion guide walking through Apps Script deployment.
+- **Interactive Setup Guide**: 5-step accordion guide walking through Apps Script deployment, Google account authorization, and "unsafe" warning handling.
 - **Connection Diagnostics**: Measures live ping latency (ms) and counts active products in the sheet.
 - **Store Profile Customization**: Store name, currency symbol selector (`₱`, `$`, `€`, `£`, `¥`, `RM`, `₹`, or custom), and receipt footer.
 

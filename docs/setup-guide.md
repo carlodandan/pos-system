@@ -105,14 +105,54 @@ Initial sample data:
 ## Step 3: Deploy Apps Script as a Web App
 
 1. In the top right corner of the Apps Script editor, click **Deploy** ➔ **New deployment**.
-2. Click the gear icon next to "Select type" and select **Web app**.
+2. Click the gear icon next to "Select type" (top left of the dialog) and choose **Web app**.
 3. Configure the deployment settings:
    - **Description**: `POS Web App API v1`
    - **Execute as**: `Me (<your-email@gmail.com>)`
-   - **Who has access**: `Anyone` *(Crucial: This enables the browser frontend to communicate without OAuth friction)*.
+   - **Who has access**: `Anyone` *(Crucial: This enables the browser POS frontend to communicate with your backend without requiring cashiers or customers to log into Google)*.
 4. Click **Deploy**.
-5. Grant permissions when prompted (Click *Advanced* ➔ *Go to POS API (unsafe)* ➔ *Allow*).
-6. Copy the generated **Web App URL** (format: `https://script.google.com/macros/s/AKfycb.../exec`).
+
+---
+
+### Step 3.1: Authorize Access & Bypass the "Unsafe" Warning
+
+When deploying for the first time, Google Apps Script requires you to authorize the script to access your Google Sheets. Because this is a custom, self-hosted script that hasn't gone through Google's commercial OAuth verification process, Google will present a security warning.
+
+Follow these steps to complete authorization:
+
+1. **Authorization Prompt**:
+   - A dialog titled **"Authorization required"** will appear.
+   - Click **Authorize access** (or **Review permissions**).
+
+2. **Choose Account**:
+   - Select your Google account from the popup window.
+
+3. **Google Security Warning Screen ("Google hasn't verified this app")**:
+   - Google will show a warning screen saying:
+     > *"Google hasn't verified this app. The app wants to access sensitive info in your Google Account. Until the developer verifies this app with Google, you shouldn't use it."*
+
+4. **Click "Advanced"**:
+   - Near the bottom-left of the warning card, click the small link titled **Advanced**.
+
+5. **Proceed via "Go to POS API (unsafe)"**:
+   - In the expanded text section, click **Go to POS API (unsafe)** (or your project's name).
+
+6. **Grant Permissions**:
+   - The permissions screen (*"POS API wants to access your Google Account"*) will outline the scopes (such as viewing and managing spreadsheets in Google Drive).
+   - Scroll to the bottom and click **Allow**.
+
+7. **Copy Your Live Web App URL**:
+   - Once authorized, the deployment modal will display your new **Web App URL**:
+     ```
+     https://script.google.com/macros/s/AKfycb.../exec
+     ```
+   - Click **Copy** to copy this URL to your clipboard.
+
+> [!WARNING]
+> **Why Does Google Show an "Unsafe" Warning?**
+> - **Standard Google Safeguard**: Google displays this warning for *all* private, developer-created Apps Scripts that have not been submitted for official Google Cloud OAuth verification.
+> - **Shared Web App Access**: Because the script executes as **Me** and access is set to **Anyone**, **anyone who has access to your Web App URL can read and modify anything in your spreadsheet database** (e.g. products, sales history, cashiers).
+> - **Keep Your URL Secure**: Treat your Web App URL as an API secret key. Do not post it publicly or commit it to public GitHub repositories. Only paste it into your POS terminal's **Settings** tab or your local `.env.local` file.
 
 ---
 
