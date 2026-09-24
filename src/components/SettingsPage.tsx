@@ -77,7 +77,7 @@ export default function SettingsPage({
   const [showGuide, setShowGuide] = useState(true);
   const [showCustomTemplateInput, setShowCustomTemplateInput] = useState(false);
   const [customTemplateUrl, setCustomTemplateUrl] = useState(
-    storeSettings.templateSheetUrl || 'https://docs.google.com/spreadsheets/d/1BxiMVs0XRA5nFMdKvBdBZjgmUUqptlbs74OgvE2upms/copy'
+    storeSettings.templateSheetUrl || 'https://docs.google.com/spreadsheets/d/1yNb-MVgbBkli8kO4Dxl2ePv4Qn7ZuH_wRLWqWUD8uck/copy'
   );
 
   // Handle URL Save

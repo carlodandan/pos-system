@@ -50,7 +50,7 @@ export default function PosApp() {
       currencySymbol: '₱',
       cashierName: 'Carlo',
       receiptFooter: 'Thank you for your business! Please come again.',
-      templateSheetUrl: 'https://docs.google.com/spreadsheets/d/1BxiMVs0XRA5nFMdKvBdBZjgmUUqptlbs74OgvE2upms/copy'
+      templateSheetUrl: 'https://docs.google.com/spreadsheets/d/1yNb-MVgbBkli8kO4Dxl2ePv4Qn7ZuH_wRLWqWUD8uck/copy'
     };
   });
 
