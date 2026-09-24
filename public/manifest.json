@@ -1,7 +1,7 @@
 {
   "name": "Point-of-Sale System",
   "short_name": "POS System",
-  "description": "Professional digital illustrator specializing in character design, webtoon art assistance, and concept illustrations. Explore my portfolio of personal works and webtoon collaborations.",
+  "description": "A modern, responsive Point-of-Sale (POS) web application built with React, TypeScript, and Google Sheets.",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#fff",
@@ -97,46 +97,11 @@
   ],
   "screenshots": [
     {
-      "src": "http://localhost:5173/pages/dashboard.webp",
+      "src": "/pages/dashboard.webp",
       "sizes": "1590x769",
       "type": "image/webp",
       "form_factor": "wide",
       "label": "Point-of-Sale System Web View"
-    },
-    {
-      "src": "http://localhost:5173/pages/dashboardmobile.webp",
-      "sizes": "1080x2405",
-      "type": "image/webp", 
-      "form_factor": "narrow",
-      "label": "Point-of-Sale System - Mobile View"
-    }
-  ],
-  "shortcuts": [
-    {
-      "name": "Producs",
-      "short_name": "products",
-      "description": "Browse POS Products",
-      "url": "/products",
-      "icons": [
-        {
-          "src": "/icons/android-icon-96x96.png",
-          "sizes": "96x96",
-          "type": "image/png"
-        }
-      ]
-    },
-    {
-      "name": "Inventory",
-      "short_name": "inventory", 
-      "description": "Browse POS Inventory",
-      "url": "/profile",
-      "icons": [
-        {
-          "src": "/icons/android-icon-96x96.png",
-          "sizes": "96x96",
-          "type": "image/png"
-        }
-      ]
     }
   ],
   "related_applications": [],

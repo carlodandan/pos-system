@@ -62,6 +62,8 @@ Open [http://localhost:5173](http://localhost:5173) in your browser.
 ```bash
 pnpm build
 ```
+> [!TIP]
+> Before deploying your web build to production (e.g. Cloudflare Pages, Vercel, Netlify), be sure to update your production domain in `public/sitemap.xml`, `public/robots.txt`, and `index.html`. See [Step 6 in the Setup Guide](./docs/setup-guide.md#step-6-production-web-app-deployment--url-configuration) for the checklist.
 
 ### 5. Run & Build Native Desktop App (Tauri v2)
 ```bash

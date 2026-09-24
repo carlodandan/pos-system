@@ -210,3 +210,106 @@ Run the automated end-to-end integration test suite directly from your terminal:
 ```bash
 node scripts/test-api.mjs "https://script.google.com/macros/s/YOUR_SCRIPT_ID/exec"
 ```
+
+---
+
+## Step 6: Production Web App Deployment & URL Configuration
+
+When deploying the frontend to a production host (such as **Cloudflare Pages**, **Vercel**, **Netlify**, or a custom domain), you must replace development URLs (`http://localhost:5173/`) across several files. This ensures correct SEO crawling, PWA installation, Open Graph social share cards, and asset routing.
+
+### Quick Reference Checklist
+
+| File | Parameter / Tag | Local Default | Production Target | Purpose |
+| :--- | :--- | :--- | :--- | :--- |
+| `public/sitemap.xml` | `<loc>` | `http://localhost:5173/` | `https://your-domain.com/` | Search engine indexing |
+| `public/sitemap.xml` | `<lastmod>` | `YYYY-MM-DD` | Current Date (e.g. `2026-03-25`) | Crawl freshness indicator |
+| `public/robots.txt` | `Sitemap:` | `https://localhost:5173/sitemap.xml` | `https://your-domain.com/sitemap.xml` | Directs search engine bots to sitemap |
+| `index.html` | `<link rel="canonical">` | `http://localhost:5173/` | `https://your-domain.com/` | Canonical URL to prevent duplicate index |
+| `index.html` | `og:url` & `og:image` | `http://localhost:5173/` | `https://your-domain.com/` | Social media link preview cards |
+| `public/manifest.json` | `screenshots[].src` | `/pages/dashboard.webp` | `/pages/dashboard.webp` or full URL | PWA install dialog screenshot |
+| `public/manifest.json` | `start_url` & `scope` | `"/"` | `"/"` (or `"/repo/"` if subfolder) | PWA launch boundary |
+| `vite.config.ts` | `base` | `'/'` (root) | `'/subpath/'` *(subfolders only)* | Asset bundle path resolution |
+| Hosting Environment | `VITE_POS_API_URL` | None | `https://script.google.com/.../exec` | Auto-connects backend on launch |
+
+---
+
+### File-by-File Configuration Details
+
+#### 1. Sitemap (`public/sitemap.xml`)
+Update the `<loc>` tag to your production domain so search engines index the official address:
+```xml
+<url>
+  <!-- Change from http://localhost:5173/ to your live production domain -->
+  <loc>https://your-pos-domain.com/</loc>
+  <lastmod>2026-03-25</lastmod>
+  <changefreq>daily</changefreq>
+  <priority>1.0</priority>
+</url>
+```
+
+#### 2. Search Engine Crawler Directives (`public/robots.txt`)
+Update the sitemap directive at the bottom of `public/robots.txt`:
+```txt
+# Sitemap location (Update with your live production domain)
+Sitemap: https://your-pos-domain.com/sitemap.xml
+```
+
+#### 3. HTML Canonical & Social Meta Tags (`index.html`)
+Inside the `<head>` of `index.html`, update the canonical link and Open Graph / Twitter cards:
+```html
+<!-- Canonical URL -->
+<link rel="canonical" href="https://your-pos-domain.com/" />
+
+<!-- Open Graph / Facebook / LinkedIn / Discord -->
+<meta property="og:type" content="website" />
+<meta property="og:title" content="Point-of-Sale System" />
+<meta property="og:description" content="A modern, responsive Point-of-Sale (POS) web application built with React, TypeScript, and Google Sheets." />
+<meta property="og:url" content="https://your-pos-domain.com/" />
+<meta property="og:image" content="https://your-pos-domain.com/pages/dashboard.webp" />
+
+<!-- Twitter Card -->
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Point-of-Sale System" />
+<meta name="twitter:description" content="A modern, responsive Point-of-Sale (POS) web application built with React, TypeScript, and Google Sheets." />
+<meta name="twitter:image" content="https://your-pos-domain.com/pages/dashboard.webp" />
+```
+
+#### 4. Web App Manifest (`public/manifest.json`)
+The web app manifest defines how your POS behaves when installed as a PWA on iPads, tablets, and desktop browsers:
+- **`start_url` and `scope`**: If your app is deployed at the domain root (e.g., `https://pos.mybusiness.com`), leave both as `"/"`. If deployed under a path (e.g., `https://username.github.io/pos-system/`), update to `"/pos-system/"`.
+- **`screenshots`**: Ensure the screenshot path matches your domain:
+  ```json
+  "screenshots": [
+    {
+      "src": "/pages/dashboard.webp",
+      "sizes": "1590x769",
+      "type": "image/webp",
+      "form_factor": "wide",
+      "label": "Point-of-Sale System Web View"
+    }
+  ]
+  ```
+
+#### 5. Base Path in `vite.config.ts` *(Subfolder hosting only)*
+If you are deploying to root domains or subdomains (e.g. `pos.store.com` or `pos-app.pages.dev`), no change is needed. 
+
+If hosting in a subfolder (such as GitHub Pages `https://<org>.github.io/<repo>/`):
+```typescript
+// vite.config.ts
+export default defineConfig({
+  base: '/<repo-name>/', // Add your repository name as the base
+  // ... rest of config
+});
+```
+
+#### 6. Production Backend API URL (`.env.production` or Hosting Dashboard)
+To prevent requiring staff to enter the Google Apps Script Web App URL manually in the Settings UI on every terminal:
+1. In your hosting provider's dashboard (e.g. **Cloudflare Pages** ➔ Settings ➔ Environment Variables, or **Vercel** / **Netlify** Environment Variables), add:
+   ```env
+   VITE_POS_API_URL=https://script.google.com/macros/s/AKfycb.../exec
+   ```
+2. Or create a `.env.production` file in your repository:
+   ```env
+   VITE_POS_API_URL=https://script.google.com/macros/s/AKfycb.../exec
+   ```
+When you run `pnpm build`, Vite will automatically bake this default API URL into the production assets, providing zero-config instant connectivity for all POS devices.

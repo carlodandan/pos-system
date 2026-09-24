@@ -20,9 +20,10 @@ graph TD
 ### 1. [Setup & Verification Guide](./setup-guide.md)
 Step-by-step instructions for initializing the system:
 - Creating the Google Sheet database (4 sheets: `Products`, `Sales`, `SaleItems`, `Cashiers`).
-- Deploying the Google Apps Script backend as a Web App.
-- Configuring the React frontend (via Settings UI or `.env.local`).
+- Deploying the Google Apps Script backend as a Web App (authorization & safety prompt bypass).
+- Configuring the React frontend (via Settings UI, `.env.local`, or `.env.production`).
 - Running manual and automated verification tests.
+- Production web app deployment checklist (updating URLs in `sitemap.xml`, `robots.txt`, `index.html`, and `manifest.json`).
 
 ### 2. [System Architecture](./architecture.md)
 Technical specifications of the serverless architecture:
